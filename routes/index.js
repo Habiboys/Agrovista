@@ -11,8 +11,7 @@ const { where } = require("sequelize");
 const { Op } = require("sequelize");
 const moment = require("moment");
 const anthropic = new Anthropic({
-  apiKey:
-    "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",
+  apiKey: process.env.CLAUDE_API_KEY, 
 });
 
 function isAuthenticated(req, res, next) {
