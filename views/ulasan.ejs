@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+  </head>
+  <body class="font-sans">
+    <header class="bg-white shadow">
+      <nav
+        class="container mx-auto px-6 py-3 flex justify-between items-center"
+      >
+        <div class="text-green-700 font-bold text-xl">
+          <a href="/">Desa Wisata Leuwi Malang</a>
+        </div>
+        <div class="space-x-4">
+          <a href="/" class="text-gray-600 hover:text-green-700">Home</a>
+          <a href="#" class="text-gray-600 hover:text-green-700">Kegiatan</a>
+          <a href="#" class="text-gray-600 hover:text-green-700">Paket</a>
+          <a href="#" class="text-gray-600 hover:text-green-700">Kontak</a>
+        </div>
+        <button
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Beri Ulasan
+        </button>
+      </nav>
+    </header>
+
+    <main class="container mx-auto mt-10 px-6">
+      <h1 class="text-3xl font-bold text-center mb-8">Beri Ulasan!</h1>
+      <form
+        method="post"
+        action="/kirim-ulasan"
+        class="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6"
+      >
+        <!-- Nama field (optional) -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">
+            Nama (Opsional)
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="nama"
+            name="nama"
+            type="text"
+          />
+        </div>
+
+        <!-- Jenis Kelamin field (required) -->
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="jenis-kelamin"
+          >
+            Jenis Kelamin
+          </label>
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="jenis-kelamin"
+            name="jenis_kelamin"
+            required
+          >
+            <option value="" disabled selected hidden>
+              Pilih Jenis Kelamin
+            </option>
+            <option value="P">Pria</option>
+            <option value="L">Wanita</option>
+          </select>
+        </div>
+
+        <!-- Umur field (required) -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="umur"
+            >Umur</label
+          >
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="umur"
+            type="number"
+            name="umur"
+            required
+          />
+        </div>
+
+        <!-- Asal field (required) -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="asal"
+            >Asal</label
+          >
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="asal"
+            type="text"
+            name="asal"
+            required
+          />
+        </div>
+
+        <!-- Pekerjaan field (required) -->
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="pekerjaan"
+            >Pekerjaan</label
+          >
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="pekerjaan"
+            type="text"
+            name="pekerjaan"
+            required
+          />
+        </div>
+
+        <!-- Jenis Agrotourism field (required) -->
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="jenis-agrotourism"
+            >Jenis Agrotourism</label
+          >
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="jenis-agrotourism"
+            name="jenis_wisata"
+            required
+          >
+            <option value="" disabled selected hidden>
+              Pilih Jenis Wisata
+            </option>
+            <% jenisWisata.forEach((jeniswisata) => { %>
+            <option value="<%= jeniswisata.id %>">
+              <%= jeniswisata.nama_wisata %>
+            </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Ulasan field (required) -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="ulasan"
+            >Ulasan</label
+          >
+          <textarea
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="ulasan"
+            name="ulasan"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-center">
+          <button
+            class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+            value="submit"
+          >
+            Kirim
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="bg-green-700 text-white py-8 mt-12">
+      <div class="container mx-auto px-6 flex flex-wrap justify-between">
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-2">Desa Wisata Leuwi Malang</h3>
+          <p class="text-sm">
+            There are many variations of passages of Lorem Ipsum available, but
+            the majority have suffered alteration in some form.
+          </p>
+        </div>
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-2">Quick Links</h3>
+          <ul class="text-sm">
+            <li><a href="#" class="hover:underline">Home</a></li>
+            <li><a href="#" class="hover:underline">Kegiatan</a></li>
+            <li><a href="#" class="hover:underline">Paket</a></li>
+            <li><a href="#" class="hover:underline">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-2">Contacts</h3>
+          <p class="text-sm">+62XXXXXXXXXX</p>
+          <p class="text-sm">desawisata@gmail.com</p>
+        </div>
+        <div class="w-full md:w-1/4">
+          <h3 class="text-xl font-bold mb-2">Location</h3>
+          <p class="text-sm">
+            Villaku Indah Blok II No. 24, Jl. Desa Sejuk, Kota Bahagia, Barat
+            34567
+          </p>
+        </div>
+      </div>
+      <div class="container mx-auto px-6 mt-8 text-center text-sm">
+        <p>Copyright © 2024 All Rights Reserved</p>
+      </div>
+    </footer>
+  </body>
+</html>

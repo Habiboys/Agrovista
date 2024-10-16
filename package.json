@@ -1,0 +1,41 @@
+{
+  "name": "bismillah",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "build:css": "npx tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --watch"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.29.0",
+    "@google/generative-ai": "^0.21.0",
+    "ai": "^3.4.9",
+    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "connect-session-sequelize": "^7.1.7",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.4.5",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.18.1",
+    "http-errors": "~1.6.3",
+    "markdown-it": "^14.1.0",
+    "marked": "^14.1.2",
+    "morgan": "~1.9.1",
+    "mysql2": "^3.11.3",
+    "nodemon": "^3.1.7",
+    "open": "^10.1.0",
+    "openai": "^4.67.3",
+    "sequelize": "^6.37.4",
+    "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  }
+}

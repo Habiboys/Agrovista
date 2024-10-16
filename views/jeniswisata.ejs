@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista - Jenis Wisata</title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="w-64 bg-green-700 text-white flex flex-col">
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-yellow-400 text-center">
+            AgroWista
+          </h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto mt-6">
+          <a
+            href="dashboard"
+            class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+          >
+            <iconify-icon
+              icon="mdi:view-dashboard"
+              class="text-xl"
+            ></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+          <a
+            href="jeniswisata"
+            class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4"
+          >
+            <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
+            <span>Jenis Wisata</span>
+          </a>
+          <a
+            href="dataulasan"
+            class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+          >
+            <iconify-icon
+              icon="mdi:message-text"
+              class="text-xl"
+            ></iconify-icon>
+            <span>Ulasan</span>
+          </a>
+        </nav>
+        <div class="p-4">
+          <form action="/auth/logout" method="POST" class="flex items-center">
+            <button
+              type="submit"
+              class="flex items-center py-3 px-4 hover:bg-red-600 transition-colors duration-200 space-x-4"
+            >
+              <iconify-icon icon="mdi:logout" class="text-xl"></iconify-icon>
+              <span>Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="flex-1 overflow-y-auto">
+        <header class="bg-white shadow">
+          <div class="flex justify-between items-center px-4 py-3">
+            <h2 class="text-xl font-semibold">Jenis Wisata</h2>
+            <div class="flex items-center">
+              <input
+                type="text"
+                placeholder="Search"
+                class="px-3 py-1 border rounded-md mr-4"
+              />
+              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+        </header>
+
+        <main class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Jenis Wisata</h1>
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md">
+              Tambah
+            </button>
+          </div>
+
+          <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    NO
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Nama
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Gambar
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Deskripsi
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Aksi
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <!-- Repeat this row structure for each item -->
+                <% jeniswisata.forEach((jeniswisata, index) => { %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap"><%= index + 1 %></td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <%= jeniswisata.nama_wisata %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <img
+                      src="<%= jeniswisata.gambar %>"
+                      alt="Wisata 1"
+                      class="h-10 w-10 rounded-sm"
+                    />
+                  </td>
+                  <td class="px-6 py-4"><%= jeniswisata.deskripsi %></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      class="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button class="bg-red-500 text-white px-3 py-1 rounded-md">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <% }) %>
+                <!-- Repeat the row structure for 5 more items to match the image -->
+              </tbody>
+            </table>
+          </div>
+        </main>
+
+        <footer class="bg-white text-center py-4 mt-6">
+          <p>Copyright © 2024 All Rights Reserved</p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

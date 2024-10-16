@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista Dashboard</title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="w-64 bg-green-700 text-white flex flex-col">
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-yellow-400 text-center">
+            AgroWista
+          </h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto mt-6">
+          <a
+            href="dashboard"
+            class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4"
+          >
+            <iconify-icon
+              icon="mdi:view-dashboard"
+              class="text-xl"
+            ></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+          <a
+            href="jeniswisata"
+            class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+          >
+            <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
+            <span>Jenis Wisata</span>
+          </a>
+          <a
+            href="dataulasan"
+            class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+          >
+            <iconify-icon
+              icon="mdi:message-text"
+              class="text-xl"
+            ></iconify-icon>
+            <span>Ulasan</span>
+          </a>
+        </nav>
+        <div class="p-4">
+          <form action="/auth/logout" method="POST" class="flex items-center">
+            <button
+              type="submit"
+              class="flex items-center py-3 px-4 hover:bg-red-600 transition-colors duration-200 space-x-4"
+            >
+              <iconify-icon icon="mdi:logout" class="text-xl"></iconify-icon>
+              <span>Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="flex-1 overflow-y-auto">
+        <header class="bg-white shadow">
+          <div class="flex justify-between items-center px-4 py-3">
+            <h2 class="text-xl font-semibold">Home</h2>
+            <div class="flex items-center">
+              <input
+                type="text"
+                placeholder="Search"
+                class="px-3 py-1 border rounded-md mr-4"
+              />
+              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+        </header>
+
+        <main class="p-6">
+          <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Total Ulasan</h3>
+              <p class="text-3xl font-bold text-center"><%= total_ulasan %></p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Total Wisata</h3>
+              <p class="text-3xl font-bold text-center"><%= total_wisata %></p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-4">Rekap Ulasan</h3>
+              <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p class="text-2xl font-bold"><%= total_positif %></p>
+                  <h4 class="text-base font-medium text-gray-600">Positif</h4>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold"><%= total_netral %></p>
+                  <h4 class="text-base font-medium text-gray-600">Netral</h4>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold"><%= total_negatif %></p>
+                  <h4 class="text-base font-medium text-gray-600">Negatif</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow">
+              <div class="mb-2">
+                <h3 class="text-lg font-semibold mb-4">
+                  Ulasan Positif, Netral & Negatif Per Bulan
+                </h3>
+                <canvas id="monthlyChart" width="400" height="200"></canvas>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-4">
+                  Jenis Ulasan Per Wisata
+                </h3>
+                <canvas id="tourismChart"></canvas>
+              </div>
+            </div>
+            <div
+              class="bg-white p-4 rounded-lg shadow items-center justify-center"
+            >
+              <div>
+                <h3 class="text-lg font-semibold mb-4">
+                  Total Ulasan Per Wisata
+                </h3>
+                <canvas id="distributionChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 gap-6 mb-6 bg-white p-4 rounded-lg shadow"
+          >
+            <h3 class="text-lg font-semibold mb-4">Distribusi Umur Pengulas</h3>
+            <canvas class="mb-2" id="umurChart"></canvas>
+          </div>
+
+          <div
+            class="grid grid-cols-1 gap-6 mb-6 bg-white p-4 rounded-lg shadow"
+          >
+            <h3 class="text-lg font-semibold mb-4">
+              Distribusi Ulasan Berdasarkan Asal
+            </h3>
+            <canvas id="asalDoughnutChart"></canvas>
+          </div>
+        </main>
+
+        <footer class="bg-white text-center py-4 mt-6">
+          <p>Copyright © 2024 All Rights Reserved</p>
+        </footer>
+      </div>
+    </div>
+    <script>
+      const monthlyData = <%- monthlyData %>; // Make sure you're using EJS or your template engine properly
+
+      new Chart(document.getElementById("monthlyChart"), {
+        type: "bar",
+        data: {
+          labels: [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+          ],
+          datasets: [
+            {
+              label: "Positif",
+              data: monthlyData.positif, // Use the dynamic data
+              backgroundColor: "#22c55e",
+            },
+            {
+              label: "Netral",
+              data: monthlyData.netral, // Use the dynamic data
+              backgroundColor: "#fbbf24",
+            },
+            {
+              label: "Negatif",
+              data: monthlyData.negatif, // Use the dynamic data
+              backgroundColor: "#ef4444",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true },
+          },
+        },
+      });
+    </script>
+    <script>
+                    const reviewCounts = <%- reviewCounts %>;
+
+                    new Chart(document.getElementById("distributionChart"), {
+                      type: "pie",
+                      data: {
+                        labels: reviewCounts.labels,
+                        datasets: [
+                          {
+                            data: reviewCounts.data,
+                            backgroundColor: [
+                              "#22c55e", // Color for the first tourism type
+                              "#eab308", // Color for the second tourism type
+                              "#ef4444", // Color for the third tourism type
+                              "#f97316", // Color for the fourth tourism type
+                              "#3b82f6", // Color for the fifth tourism type
+                              // Add more colors as needed for additional types
+                            ],
+                          },
+                        ],
+                      },
+                      options: {
+                        responsive: true,
+                        plugins: {
+                          legend: {
+                            position: "bottom",
+                          },
+                        },
+                      },
+                    });
+
+              const chartData = <%- chartData %>; // Chart data from the backend
+
+              new Chart(document.getElementById("tourismChart"), {
+                type: "bar",
+                data: {
+                  labels: chartData.labels,
+                  datasets: [
+                    {
+                      label: "Positif",
+                      data: chartData.positif,
+                      backgroundColor: "#3b82f6",
+                    },
+                    {
+                      label: "Negatif",
+                      data: chartData.negatif,
+                      backgroundColor: "#ef4444",
+                    },
+                    {
+                      label: "Netral",
+                      data: chartData.netral,
+                      backgroundColor: "#fbbf24", // Color for neutral reviews
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
+                  },
+                  plugins: {
+                    legend: {
+                      position: "top",
+                    },
+                  },
+                },
+              });
+              const umurCounts = <%- umurCounts %>; // Use unescaped output
+              const umurLabels = <%- umurLabels %>; // Use unescaped output
+
+          new Chart(document.getElementById("umurChart"), {
+            type: "bar",
+            data: {
+              labels: umurLabels, // Use the age labels
+              datasets: [
+                {
+                  label: "Jumlah Ulasan",
+                  data: umurCounts, // Use the fetched counts
+                  backgroundColor: "#60a5fa",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Kelompok Umur",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Jumlah Ulasan",
+                  },
+                  beginAtZero: true,
+                },
+              },
+            },
+          });
+
+      const asalLabels = <%- asalLabels %>; // Use unescaped output for labels
+      const asalData = <%- asalData %>; // Use unescaped output for data
+
+      new Chart(document.getElementById("asalDoughnutChart"), {
+        type: "doughnut",
+        data: {
+          labels: asalLabels, // Use the asal labels fetched from the database
+          datasets: [
+            {
+              data: asalData, // Use the counts for each asal
+              backgroundColor: ["#22c55e", "#f97316", "#3b82f6", "#ef4444"], // Colors for each section
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud/1.0.9/jquery.wordcloud.js"></script>
+  </body>
+</html>

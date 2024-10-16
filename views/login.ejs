@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroWista Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-green-700">AgroWista</h1>
+            <p class="text-gray-600 mt-2">Welcome back! Please login to your account.</p>
+        </div>
+        <% if (errorMessage.length > 0) { %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center mb-4" role="alert">
+                <p class=""><%= errorMessage %></p>
+            </div>
+        <% } %>
+        
+        <form action="/auth/login" method="POST">
+            <div class="mb-4">
+              <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+              <div class="relative">
+                <iconify-icon icon="mdi:email" class="absolute text-gray-500 top-3 left-3"></iconify-icon>
+                <input type="email" id="email" name="email" class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500" placeholder="Enter your email" required>
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+              <div class="relative">
+                <iconify-icon icon="mdi:lock" class="absolute text-gray-500 top-3 left-3"></iconify-icon>
+                <input type="password" id="password" name="password" class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500" placeholder="Enter your password" required>
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white rounded-lg px-4 py-2 hover:bg-green-700 focus:outline-none focus:shadow-outline">
+              Log In
+            </button>
+          </form>
+          
+     
+    </div>
+</body>
+</html>

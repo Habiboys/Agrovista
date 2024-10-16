@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista - Ulasan</title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="w-64 bg-green-700 text-white flex flex-col">
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-yellow-400 text-center">AgroWista</h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto mt-6">
+          <a href="/admin/dashboard" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
+            <iconify-icon icon="mdi:view-dashboard" class="text-xl"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+          <a href="/admin/jeniswisata" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
+            <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
+            <span>Jenis Wisata</span>
+          </a>
+          <a href="/admin/dataulasan" class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4">
+            <iconify-icon icon="mdi:message-text" class="text-xl"></iconify-icon>
+            <span>Ulasan</span>
+          </a>
+        </nav>
+        <div class="p-4">
+          <a href="#" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
+            <iconify-icon icon="mdi:cog" class="text-xl"></iconify-icon>
+            <span>Setting</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="flex-1 overflow-y-auto">
+        <header class="bg-white shadow">
+          <div class="flex justify-between items-center px-4 py-3">
+            <h2 class="text-xl font-semibold">Ulasan</h2>
+            <div class="flex items-center">
+              <input
+                type="text"
+                placeholder="Search"
+                class="px-3 py-1 border rounded-md mr-4"
+              />
+              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+        </header>
+
+        <main class="p-6">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <%- content %>
+            </div>
+
+        </main>
+
+        <footer class="bg-white text-center py-4 mt-6">
+          <p>Copyright © 2024 All Rights Reserved</p>
+        </footer>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
