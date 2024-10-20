@@ -473,4 +473,14 @@ router.post("/kirim-ulasan", async (req, res) => {
   }
 });
 
+router.post('/chat', async (req, res) => {
+  try {
+    const response = await axios.post('http://localhost:5000/api/chat', req.body);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'An error occurred while processing your request.' });
+  }
+});
+
 module.exports = router;
