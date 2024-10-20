@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 require("dotenv").config();
 
-const { DataUlasan, jenis_wisata } = require("../models"); // Adjust the path according to your project structure
+const { DataUlasan, jenis_wisata, Produk } = require("../models"); // Adjust the path according to your project structure
 const { sequelize } = require("../models");
 const axios = require("axios");
 const MarkdownIt = require("markdown-it");
@@ -11,8 +11,9 @@ const { where } = require("sequelize");
 const { Op } = require("sequelize");
 const moment = require("moment");
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY, 
+  apiKey: process.env.CLAUDE_API_KEY,
 });
+const upload = require("../middleware/uploadFile");
 
 function isAuthenticated(req, res, next) {
   if (req.session.userId) {
@@ -29,6 +30,7 @@ router.get("/", async (req, res) => {
     limit: 4,
     order: [["createdAt", "DESC"]],
   });
+  const total_produk = await Produk.count();
   const dataUlasan = await DataUlasan.findAll({
     limit: 3,
     order: [["createdAt", "DESC"]],
@@ -37,6 +39,7 @@ router.get("/", async (req, res) => {
     title: "AgroWista",
     total_ulasan,
     total_wisata,
+    total_produk,
     jenisWisata,
     dataUlasan,
   });
@@ -393,8 +396,25 @@ router.get("/admin/dashboard", isAuthenticated, async (req, res, next) => {
 
 router.get("/admin/jeniswisata", isAuthenticated, async (req, res) => {
   try {
-    const jeniswisata = await jenis_wisata.findAll();
-    res.render("jeniswisata", { title: "Jenis Wisata", jeniswisata });
+    // const jeniswisata = await jenis_wisata.findAll();
+    const userId = req.session.userId;
+    const page = parseInt(req.query.page) || 1; // Get the page number from the query string
+    const limit = 5; // Number of items per page
+    const offset = (page - 1) * limit; // Calculate the offset
+
+    const { rows: jeniswisata, count: totalItems } =
+      await jenis_wisata.findAndCountAll({
+        limit,
+        offset,
+      });
+    const totalPages = Math.ceil(totalItems / limit);
+    res.render("jeniswisata", {
+      title: "Jenis Wisata",
+      jeniswisata,
+      userId,
+      currentPage: page,
+      totalPages,
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
     next(error);
@@ -473,13 +493,276 @@ router.post("/kirim-ulasan", async (req, res) => {
   }
 });
 
-router.post('/chat', async (req, res) => {
+router.post("/chat", async (req, res) => {
   try {
-    const response = await axios.post('http://localhost:5000/api/chat', req.body);
+    const response = await axios.post(
+      "http://localhost:5000/api/chat",
+      req.body
+    );
     res.json(response.data);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'An error occurred while processing your request.' });
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing your request." });
+  }
+});
+
+router.get("/admin/add-wisata", isAuthenticated, async (req, res) => {
+  res.render("addwisata", { title: "Tambah Wisata" });
+});
+
+router.post("/tambah-wisata", upload.single("gambar"), async (req, res) => {
+  try {
+    const { nama_wisata, deskripsi } = req.body;
+
+    // Memastikan bahwa file gambar telah diunggah
+    if (!req.file) {
+      return res.status(400).json({ message: "Gambar harus diunggah!" });
+    }
+
+    const gambar = req.file.filename; // Mendapatkan path gambar dari multer
+
+    // Memeriksa jika field lain tidak ada
+    if (!nama_wisata || !deskripsi) {
+      return res
+        .status(400)
+        .json({ message: "Nama wisata dan deskripsi harus diisi!" });
+    }
+
+    // Simpan data wisata ke database
+    const wisata = await jenis_wisata.create({
+      nama_wisata,
+      deskripsi,
+      gambar: gambar, // Simpan path gambar yang diunggah
+    });
+
+    res.status(201).json({ message: "Wisata berhasil ditambahkan", wisata });
+  } catch (error) {
+    console.error("Error: ", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
+  }
+});
+
+router.get("/admin/edit-wisata/:id", isAuthenticated, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const wisata = await jenis_wisata.findByPk(id);
+
+    if (!wisata) {
+      return res.status(404).json({ message: "Wisata tidak ditemukan" });
+    }
+
+    res.render("editwisata", { title: "Edit Wisata", wisata });
+  } catch (error) {
+    console.error("Error: ", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
+  }
+});
+
+router.post(
+  "/admin/edit-wisata/:id",
+  upload.single("gambar"),
+  async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { nama_wisata, deskripsi } = req.body;
+
+      // Memeriksa apakah file gambar diunggah
+      const gambar = req.file ? req.file.filename : null; // Mendapatkan path gambar dari multer jika ada
+
+      // Mendapatkan data wisata yang ada di database
+      const existingWisata = await jenis_wisata.findByPk(id);
+
+      if (!existingWisata) {
+        return res.status(404).json({ message: "Wisata tidak ditemukan" });
+      }
+
+      // Update data wisata di database
+      const updatedData = {
+        nama_wisata: nama_wisata || existingWisata.nama_wisata, // Jika nama_wisata tidak diisi, gunakan data yang sudah ada
+        deskripsi: deskripsi || existingWisata.deskripsi, // Jika deskripsi tidak diisi, gunakan data yang sudah ada
+        gambar: gambar || existingWisata.gambar, // Jika gambar tidak diunggah, gunakan gambar yang sudah ada
+      };
+
+      await jenis_wisata.update(updatedData, {
+        where: { id },
+      });
+
+      res.status(200).json({ message: "Wisata berhasil diperbarui" });
+    } catch (error) {
+      console.error("Error: ", error.message);
+      res.status(500).json({ message: "Terjadi kesalahan", error });
+    }
+  }
+);
+
+router.delete("/delete-wisata/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Hapus data wisata dari database berdasarkan ID
+    const wisata = await jenis_wisata.findByPk(id);
+    if (!wisata) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Wisata tidak ditemukan" });
+    }
+
+    await wisata.destroy();
+
+    res.status(200).json({ success: true, message: "Wisata berhasil dihapus" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Terjadi kesalahan" });
+  }
+});
+
+router.get("/admin/produk", isAuthenticated, async (req, res) => {
+  try {
+    // const jeniswisata = await jenis_wisata.findAll();
+    const userId = req.session.userId;
+    const page = parseInt(req.query.page) || 1; // Get the page number from the query string
+    const limit = 5; // Number of items per page
+    const offset = (page - 1) * limit; // Calculate the offset
+
+    const { rows: produk, count: totalItems } = await Produk.findAndCountAll({
+      limit,
+      offset,
+    });
+    const totalPages = Math.ceil(totalItems / limit);
+    res.render("produk", {
+      produk,
+      userId,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    next(error);
+  }
+});
+
+router.get("/admin/add-produk", isAuthenticated, async (req, res) => {
+  const kategoriEnum = Produk.rawAttributes.kategori.values;
+  res.render("addproduk", { title: "Tambah Produk", kategoriEnum });
+});
+
+router.post("/tambah-produk", upload.single("gambar"), async (req, res) => {
+  try {
+    const { nama, kategori, deskripsi } = req.body;
+
+    // Memastikan bahwa file gambar telah diunggah
+    if (!req.file) {
+      return res.status(400).json({ message: "Gambar harus diunggah!" });
+    }
+
+    const gambar = req.file.filename; // Mendapatkan path gambar dari multer
+
+    // Memeriksa jika field lain tidak ada
+    if (!nama || !kategori || !deskripsi) {
+      return res
+        .status(400)
+        .json({ message: "Nama, kategori, dan deskripsi harus diisi!" });
+    }
+
+    // Simpan data produk ke database
+    const produk = await Produk.create({
+      nama,
+      kategori,
+      deskripsi,
+      gambar: gambar, // Simpan path gambar yang diunggah
+    });
+
+    res.status(201).json({ message: "Produk berhasil ditambahkan", produk });
+  } catch (error) {
+    console.error("Error: ", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
+  }
+});
+
+router.get("/admin/edit-produk/:id", isAuthenticated, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const produk = await Produk.findByPk(id);
+
+    if (!produk) {
+      return res.status(404).json({ message: "Produk tidak ditemukan" });
+    }
+
+    const kategoriEnum = Produk.rawAttributes.kategori.values;
+    res.render("editproduk", { title: "Edit Produk", produk, kategoriEnum });
+  } catch (error) {
+    console.error("Error: ", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
+  }
+});
+
+router.post(
+  "/admin/edit-produk/:id",
+  upload.single("gambar"),
+  async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { nama, kategori, deskripsi } = req.body;
+
+      // Memeriksa apakah file gambar diunggah
+      const gambar = req.file ? req.file.filename : null; // Mendapatkan path gambar dari multer jika ada
+
+      // Mendapatkan data produk yang ada di database
+      const existingProduk = await Produk.findByPk(id);
+
+      if (!existingProduk) {
+        return res.status(404).json({ message: "Produk tidak ditemukan" });
+      }
+
+      // Update data produk di database
+      const updatedData = {
+        nama: nama || existingProduk.nama, // Jika nama tidak diisi, gunakan data yang sudah ada
+        kategori: kategori || existingProduk.kategori, // Jika kategori tidak diisi, gunakan data yang sudah ada
+        deskripsi: deskripsi || existingProduk.deskripsi, // Jika deskripsi tidak diisi, gunakan data yang sudah ada
+        gambar: gambar || existingProduk.gambar, // Jika gambar tidak diunggah, gunakan gambar yang sudah ada
+      };
+
+      await Produk.update(updatedData, {
+        where: { id },
+      });
+
+      res.status(200).json({ message: "Produk berhasil diperbarui" });
+    } catch (error) {
+      console.error("Error: ", error.message);
+      res.status(500).json({ message: "Terjadi kesalahan", error });
+    }
+  }
+);
+
+router.delete("/delete-produk/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Hapus data produk dari database berdasarkan ID
+    const produk = await Produk.findByPk(id);
+    if (!produk) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Produk tidak ditemukan" });
+    }
+
+    await produk.destroy();
+
+    res.status(200).json({ success: true, message: "Produk berhasil dihapus" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Terjadi kesalahan" });
+  }
+});
+
+router.get("/produk-desa", async (req, res) => {
+  try {
+    const produk = await Produk.findAll();
+    res.render("produkdesa", { title: "Produk Desa", produk });
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
 });
 

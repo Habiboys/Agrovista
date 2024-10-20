@@ -9,7 +9,7 @@
       <h1 class="text-3xl font-bold text-center mb-8">Tambah Wisata</h1>
       <form
         method="post"
-        action="/tambah-wisata"
+        action="/admin/edit-wisata/<%= wisata.id %>"
         enctype="multipart/form-data"
         class="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6"
       >
@@ -26,6 +26,7 @@
             id="nama_wisata"
             name="nama_wisata"
             type="text"
+            placeholder="<%= wisata.nama_wisata%>"
           />
         </div>
 
@@ -40,11 +41,10 @@
             id="deskripsi"
             name="deskripsi"
             rows="5"
-            required
+            placeholder="<%= wisata.deskripsi%>"
           ></textarea>
         </div>
 
-        <!-- Umur field (required) -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="gambar"
             >Gambar</label
@@ -55,13 +55,12 @@
             type="file"
             name="gambar"
             accept=".jpg, .png, .jpeg"
-            required
           />
         </div>
 
         <div class="flex items-center justify-between">
           <a
-            href="jeniswisata"
+            href="/admin/jeniswisata"
             class="bg-red-600 text-white px-4 py-2 rounded-md"
             >Kembali</a
           >

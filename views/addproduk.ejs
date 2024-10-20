@@ -6,45 +6,27 @@
   </head>
   <body class="font-sans">
     <main class="container mx-auto mt-10 px-6">
-      <h1 class="text-3xl font-bold text-center mb-8">Tambah Wisata</h1>
+      <h1 class="text-3xl font-bold text-center mb-8"><%= title%></h1>
       <form
         method="post"
-        action="/tambah-wisata"
+        action="/tambah-produk"
         enctype="multipart/form-data"
         class="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6"
       >
         <!-- Nama field (optional) -->
         <div class="mb-4">
-          <label
-            class="block text-gray-700 text-sm font-bold mb-2"
-            for="nama_wisata"
-          >
-            Nama Wisata
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">
+            Nama Produk
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="nama_wisata"
-            name="nama_wisata"
+            id="nama"
+            name="nama"
             type="text"
+            required
           />
         </div>
 
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 text-sm font-bold mb-2"
-            for="deskripsi"
-            >Deskripsi</label
-          >
-          <textarea
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="deskripsi"
-            name="deskripsi"
-            rows="5"
-            required
-          ></textarea>
-        </div>
-
-        <!-- Umur field (required) -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="gambar"
             >Gambar</label
@@ -59,10 +41,44 @@
           />
         </div>
 
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="kategori"
+            >Kategori
+          </label>
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="kategori"
+            name="kategori"
+            required
+          >
+            <option value="" disabled selected hidden>Pilih Kategori</option>
+            <% kategoriEnum.forEach((kategori) => { %>
+            <option value="<%= kategori %>"><%= kategori %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-white-700 text-sm font-bold mb-2"
+            for="deskripsi"
+            >Deskripsi</label
+          >
+          <textarea
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="deskripsi"
+            name="deskripsi"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Umur field (required) -->
+
         <div class="flex items-center justify-between">
-          <a
-            href="jeniswisata"
-            class="bg-red-600 text-white px-4 py-2 rounded-md"
+          <a href="produk" class="bg-red-600 text-white px-4 py-2 rounded-md"
             >Kembali</a
           >
           <button
