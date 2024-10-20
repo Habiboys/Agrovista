@@ -7,6 +7,8 @@ module.exports = (sequelize) => {
       DataUlasan.belongsTo(models.jenis_wisata, {
         // Define the association
         foreignKey: "jenisWisataId",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
         as: "jenisWisata", // Optional: Alias for the association
       });
     }

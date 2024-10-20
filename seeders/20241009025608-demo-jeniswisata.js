@@ -1,41 +1,43 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('jenis_wisata', [
+    await queryInterface.bulkInsert("jenis_wisata", [
       {
-        nama_wisata: 'Wisata Kebun Buah',
+        nama_wisata: "Wisata Kebun Buah",
         gambar: null, // Add image URL if available
-        deskripsi: 'Menikmati keindahan kebun buah dan belajar tentang budidaya tanaman.',
+        deskripsi:
+          "Menikmati keindahan kebun buah dan belajar tentang budidaya tanaman.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        nama_wisata: 'Wisata Peternakan',
+        nama_wisata: "Wisata Peternakan",
         gambar: null, // Add image URL if available
-        deskripsi: 'Pengalaman langsung di peternakan dengan berbagai hewan.',
+        deskripsi: "Pengalaman langsung di peternakan dengan berbagai hewan.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        nama_wisata: 'Wisata Pertanian Padi',
+        nama_wisata: "Wisata Pertanian Padi",
         gambar: null, // Add image URL if available
-        deskripsi: 'Menjelajahi proses pertanian padi dari awal hingga panen.',
+        deskripsi: "Menjelajahi proses pertanian padi dari awal hingga panen.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        nama_wisata: 'Wisata Perikanan',
+        nama_wisata: "Wisata Perikanan",
         gambar: null, // Add image URL if available
-        deskripsi: 'Belajar tentang budidaya ikan dan teknik perikanan yang berkelanjutan.',
+        deskripsi:
+          "Belajar tentang budidaya ikan dan teknik perikanan yang berkelanjutan.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        nama_wisata: 'Wisata Agro Edukasi',
+        nama_wisata: "Wisata Agro Edukasi",
         gambar: null, // Add image URL if available
-        deskripsi: 'Program edukasi tentang pertanian dan lingkungan hidup.',
+        deskripsi: "Program edukasi tentang pertanian dan lingkungan hidup.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -43,6 +45,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('jenis_wisata', null, {});
+    await queryInterface.bulkDelete("jenis_wisata", null, {});
   },
 };

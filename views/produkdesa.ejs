@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista - <%= title%></title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-white p-4 flex justify-between items-center">
+      <div class="text-green-700 font-bold text-xl">
+        Desa Wisata Leuwi Malang
+      </div>
+      <div class="space-x-4">
+        <a href="/" class="text-green-700">Home</a>
+        <a href="#" class="text-green-700">Kegiatan</a>
+        <a href="#" class="text-green-700">Paket</a>
+        <a href="produk-desa" class="text-green-700">Produk</a>
+        <a href="#" class="text-green-700">Kontak</a>
+      </div>
+      <a href="/ulasan" class="bg-green-700 text-white px-4 py-2 rounded"
+        >Beri Ulasan</a
+      >
+    </nav>
+    <div
+      id="chat-icon"
+      class="fixed bottom-5 right-5 bg-blue-500 text-white rounded-full p-3 cursor-pointer shadow-lg z-40"
+    >
+      <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </div>
+
+    <div
+      id="chat-window"
+      class="hidden fixed bottom-20 right-5 w-80 bg-white rounded-lg shadow-xl z-50"
+    >
+      <div class="bg-blue-500 text-white p-4 rounded-t-lg">
+        <h3 class="font-bold">Tanya Mr Noid</h3>
+      </div>
+      <div id="chat-messages" class="h-80 overflow-y-auto p-4">
+        <!-- Chat messages will be appended here -->
+      </div>
+      <div class="p-4 border-t">
+        <input
+          id="user-input"
+          type="text"
+          placeholder="Type your message..."
+          class="w-full p-2 border rounded"
+        />
+        <button
+          id="send-btn"
+          class="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+    <!-- Header Section -->
+    <!-- <div
+      class="bg-cover bg-center h-64"
+      style="background-image: url('/img/fti15.jpg')"
+    >
+      <div
+        class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-50"
+      >
+        <h1 class="text-white text-4xl font-bold">Daftar Produk</h1>
+      </div>
+    </div> -->
+
+    <!-- Packages Section -->
+    <section class="py-12 p-4">
+      <div class="container mx-auto">
+        <% if (produk.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% produk.forEach((produk, index) => { %>
+          <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <!-- Product Image -->
+            <div class="relative">
+              <img
+                src="/1/<%= produk.gambar %>"
+                alt="Gambar Produk"
+                class="w-full h-48 object-cover"
+              />
+            </div>
+            <!-- Product Content -->
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2"><%= produk.nama %></h3>
+              <p class="text-gray-700 mb-4"><%= produk.deskripsi %></p>
+
+              <!-- QR Code Button -->
+              <a
+                href="/lihatQR/<%= produk.id %>"
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                >Lihat QR Code</a
+              >
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+        <!-- Load More Button -->
+        <% if (produk.length > 3) { %>
+        <div class="flex justify-center mt-10">
+          <span
+            class="bg-gray-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-gray-600 transition duration-200"
+            >Load More</span
+          >
+        </div>
+        <% } %> <% } else { %>
+        <!-- Message for No Products -->
+        <h1 class="text-center text-3xl font-bold text-gray-700">
+          Belum Ada Produk
+        </h1>
+        <% } %>
+      </div>
+    </section>
+  </body>
+</html>

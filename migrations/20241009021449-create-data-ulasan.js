@@ -31,7 +31,8 @@ module.exports = {
           model: "jenis_wisata",
           key: "id",
         },
-        allowNull: false,
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       ulasan: {
         type: Sequelize.TEXT,
