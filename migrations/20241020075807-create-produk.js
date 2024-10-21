@@ -18,8 +18,24 @@ module.exports = {
       kategori: {
         type: Sequelize.ENUM("Makanan", "Minuman"),
       },
+      komposisi: {
+        type: Sequelize.TEXT,
+      },
       deskripsi: {
         type: Sequelize.TEXT,
+      },
+      status_halal: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false, // Default tidak halal (belum disertifikasi)
+      },
+      sertifikasi_halal: {
+        type: Sequelize.STRING,
+      },
+      hashId: {
+        type: Sequelize.TEXT,
+      },
+      qr_code: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

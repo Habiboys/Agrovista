@@ -3,6 +3,7 @@
   <head>
     <title>AgroWista - <%= title%></title>
     <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   </head>
   <body class="font-sans">
     <main class="container mx-auto mt-10 px-6">
@@ -14,7 +15,7 @@
         class="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6"
       >
         <!-- Nama field (optional) -->
-        <div class="mb-4">
+        <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">
             Nama Produk
           </label>
@@ -27,21 +28,47 @@
           />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="gambar"
-            >Gambar</label
+        <div class="mb-6">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="gambar"
           >
+            Gambar (.png, .jpg, .jpeg)
+          </label>
+          <div class="flex items-center">
+            <label
+              class="cursor-pointer flex items-center justify-center bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hover:bg-green-600 transition duration-300 ease-in-out"
+              for="gambar"
+            >
+              <iconify-icon icon="fe:picture"></iconify-icon>
+              Unggah
+            </label>
+            <span class="ml-4 text-gray-500" id="gambar-name"
+              >Tidak ada file</span
+            >
+          </div>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="hidden"
             id="gambar"
             type="file"
             name="gambar"
             accept=".jpg, .png, .jpeg"
             required
+            onchange="updatePictName()"
           />
         </div>
 
-        <div class="mb-4">
+        <script>
+          function updatePictName() {
+            const input = document.getElementById("gambar");
+            const fileName = input.files.length
+              ? input.files[0].name
+              : "Tidak ada file";
+            document.getElementById("gambar-name").innerText = fileName;
+          }
+        </script>
+
+        <div class="mb-6">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="kategori"
@@ -60,12 +87,27 @@
           </select>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-6">
+          <label
+            class="block text-white-700 text-sm font-bold mb-2"
+            for="komposisi"
+            >Komposisi (Pisahkan dengan koma)
+          </label>
+          <textarea
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="komposisi"
+            name="komposisi"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-6">
           <label
             class="block text-white-700 text-sm font-bold mb-2"
             for="deskripsi"
-            >Deskripsi</label
-          >
+            >Deskripsi
+          </label>
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="deskripsi"
@@ -74,6 +116,63 @@
             required
           ></textarea>
         </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="halal"
+            >Status Halal (Ditinjau dari proses pembuatan)
+          </label>
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="status_halal"
+            name="status_halal"
+            required
+          >
+            <option value="" disabled selected hidden>Apakah Halal?</option>
+            <option value="1">Ya</option>
+            <option value="0">Tidak</option>
+          </select>
+        </div>
+
+        <div class="mb-12">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="sertifikasi"
+          >
+            Sertifikasi Halal (Jika Ada) .pdf
+          </label>
+          <div class="flex items-center">
+            <label
+              class="cursor-pointer flex items-center justify-center bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+              for="sertifikasi_halal"
+            >
+              <iconify-icon
+                icon="material-symbols-light:upload-2-rounded"
+              ></iconify-icon>
+              Unggah
+            </label>
+            <span class="ml-4 text-gray-500" id="file-name"
+              >Tidak ada file</span
+            >
+          </div>
+          <input
+            class="hidden"
+            id="sertifikasi_halal"
+            type="file"
+            name="sertifikasi_halal"
+            accept=".pdf"
+            onchange="updateFileName()"
+          />
+        </div>
+
+        <script>
+          function updateFileName() {
+            const input = document.getElementById("sertifikasi_halal");
+            const fileName = input.files.length
+              ? input.files[0].name
+              : "Tidak ada file";
+            document.getElementById("file-name").innerText = fileName;
+          }
+        </script>
 
         <!-- Umur field (required) -->
 

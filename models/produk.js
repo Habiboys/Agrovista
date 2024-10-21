@@ -31,9 +31,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      komposisi: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       deskripsi: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
+      status_halal: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      sertifikasi_halal: {
+        type: DataTypes.STRING,
+      },
+      hashId: {
+        type: DataTypes.TEXT,
+      },
+      qr_code: {
+        type: DataTypes.STRING,
       },
     },
     {
