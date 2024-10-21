@@ -13,6 +13,10 @@ const moment = require("moment");
 const anthropic = new Anthropic({
   apiKey: process.env.CLAUDE_API_KEY,
 });
+const QRCode = require("qrcode");
+const crypto = require("crypto");
+const path = require("path");
+const fs = require("fs");
 const upload = require("../middleware/uploadFile");
 
 function isAuthenticated(req, res, next) {
@@ -648,38 +652,90 @@ router.get("/admin/add-produk", isAuthenticated, async (req, res) => {
   res.render("addproduk", { title: "Tambah Produk", kategoriEnum });
 });
 
-router.post("/tambah-produk", upload.single("gambar"), async (req, res) => {
-  try {
-    const { nama, kategori, deskripsi } = req.body;
+const qrcodeDir = path.join(__dirname, "..", "qrcodes");
+if (!fs.existsSync(qrcodeDir)) {
+  fs.mkdirSync(qrcodeDir, { recursive: true });
+}
 
-    // Memastikan bahwa file gambar telah diunggah
-    if (!req.file) {
-      return res.status(400).json({ message: "Gambar harus diunggah!" });
+router.post(
+  "/tambah-produk",
+  upload.fields([
+    { name: "gambar", maxCount: 1 },
+    { name: "sertifikasi_halal", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      const { nama, kategori, komposisi, deskripsi, status_halal } = req.body;
+
+      // Memastikan bahwa file gambar telah diunggah (gambar wajib)
+      if (!req.files || !req.files.gambar) {
+        return res
+          .status(400)
+          .json({ message: "Gambar produk harus diunggah!" });
+      }
+
+      const gambar = req.files.gambar[0].filename; // Mendapatkan path gambar dari multer
+
+      // Sertifikasi halal opsional
+      const sertifikasi_halal = req.files.sertifikasi_halal
+        ? req.files.sertifikasi_halal[0].filename
+        : null; // Jika sertifikasi tidak ada, biarkan null
+
+      // Memeriksa jika field lain tidak ada
+      if (!nama || !kategori || !deskripsi || !komposisi || !status_halal) {
+        return res.status(400).json({
+          message:
+            "Nama, kategori, deskripsi, komposisi, dan status halal tidak boleh kosong",
+        });
+      }
+
+      // Simpan data produk ke database
+      const produk = await Produk.create({
+        nama,
+        kategori,
+        komposisi,
+        deskripsi,
+        status_halal,
+        gambar, // Simpan path gambar yang diunggah
+        sertifikasi_halal, // Jika ada, simpan path sertifikasi halal yang diunggah, jika tidak, biarkan null
+      });
+
+      // Generate hash dari ID produk
+      const hash = crypto
+        .createHash("sha256")
+        .update(produk.id.toString())
+        .digest("hex");
+
+      // Generate QR code yang mengarah ke detail produk
+      const qrCodeUrl = `http://localhost:3000/detail-produk/${hash}`;
+      const qrCodeFilePath = path.join(qrcodeDir, `${produk.id}.png`); // Path untuk menyimpan QR code
+
+      // Simpan QR code sebagai file PNG
+      await QRCode.toFile(qrCodeFilePath, qrCodeUrl);
+
+      // Simpan path QR code di database
+      qrBaru = `${produk.id}.png`; // Simpan nama file QR code ke dalam produk
+
+      // Update produk di database dengan path QR code
+      await Produk.update(
+        { qr_code: qrBaru, hashId: hash },
+        { where: { id: produk.id } }
+      );
+
+      console.log("QR Code:", qrBaru);
+
+      res.status(201).json({
+        message: "Produk berhasil ditambahkan",
+        produk: {
+          ...produk.toJSON(),
+        },
+      });
+    } catch (error) {
+      console.error("Error: ", error.message);
+      res.status(500).json({ message: "Terjadi Kesalahan", error });
     }
-
-    const gambar = req.file.filename; // Mendapatkan path gambar dari multer
-
-    // Memeriksa jika field lain tidak ada
-    if (!nama || !kategori || !deskripsi) {
-      return res
-        .status(400)
-        .json({ message: "Nama, kategori, dan deskripsi harus diisi!" });
-    }
-
-    // Simpan data produk ke database
-    const produk = await Produk.create({
-      nama,
-      kategori,
-      deskripsi,
-      gambar: gambar, // Simpan path gambar yang diunggah
-    });
-
-    res.status(201).json({ message: "Produk berhasil ditambahkan", produk });
-  } catch (error) {
-    console.error("Error: ", error.message);
-    res.status(500).json({ message: "Terjadi Kesalahan", error });
   }
-});
+);
 
 router.get("/admin/edit-produk/:id", isAuthenticated, async (req, res) => {
   try {
@@ -757,12 +813,22 @@ router.delete("/delete-produk/:id", async (req, res) => {
   }
 });
 
-router.get("/produk-desa", async (req, res) => {
+router.get("/detail-produk/:hashId", async (req, res) => {
   try {
-    const produk = await Produk.findAll();
-    res.render("produkdesa", { title: "Produk Desa", produk });
+    const hashId = req.params.hashId;
+
+    // Cari produk berdasarkan hashId
+    const produk = await Produk.findOne({ where: { hashId } });
+
+    if (!produk) {
+      return res.status(404).json({ message: "Produk tidak ditemukan" });
+    }
+
+    // Render halaman detail produk dengan data produk
+    res.render("detailproduk", { produk });
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error:", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
   }
 });
 

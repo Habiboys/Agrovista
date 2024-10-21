@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Produk</title>
+  </head>
+  <body>
+    <h1>Detail Produk</h1>
+
+    <p>Nama: <%= produk.nama %></p>
+    <p>Kategori: <%= produk.kategori %></p>
+    <p>Deskripsi: <%= produk.deskripsi %></p>
+    <p>Status Halal: <%= produk.status_halal ? "Ya" : "Tidak" %></p>
+    <!-- Tampilkan informasi lain produk -->
+
+    <a href="/">Kembali</a>
+  </body>
+</html>
