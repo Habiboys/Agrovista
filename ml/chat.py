@@ -4,7 +4,7 @@ import google.generativeai as genai
 app = Flask(__name__)
 
 # Konfigurasi API
-genai.configure(api_key="AIzaSyDn3vqgBjnGpH6dyaCYUYTwktL0KRxv2vI")
+genai.configure(api_key="")
 
 def load_text_file(file_path):
     """Membaca konten dari file .txt."""
