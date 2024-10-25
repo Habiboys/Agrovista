@@ -1,47 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgroWista Login</title>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-green-700">AgroWista</h1>
-            <p class="text-gray-600 mt-2">Welcome back! Please login to your account.</p>
-        </div>
-        <% if (errorMessage.length > 0) { %>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center mb-4" role="alert">
-                <p class=""><%= errorMessage %></p>
-            </div>
-        <% } %>
-        
-        <form action="/auth/login" method="POST">
-            <div class="mb-4">
-              <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-              <div class="relative">
-                <iconify-icon icon="mdi:email" class="absolute text-gray-500 top-3 left-3"></iconify-icon>
-                <input type="email" id="email" name="email" class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500" placeholder="Enter your email" required>
+  </head>
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <!-- Main Content -->
+    <main class="w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div
+        class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center justify-center"
+      >
+        <!-- Left Side - Hero Section -->
+        <div class="hidden lg:block h-[520px]">
+          <div class="relative rounded-xl overflow-hidden h-full">
+            <img
+              src="https://images.unsplash.com/photo-1523539693385-e5e891eb4465?q=80&w=1889&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Pemandangan Pertanian"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-black/30"></div>
+            <div
+              class="absolute inset-0 flex flex-col items-center justify-center text-white p-8"
+            >
+              <iconify-icon
+                icon="mdi:sprout"
+                class="text-6xl mb-4"
+              ></iconify-icon>
+              <h2 class="text-4xl font-bold mb-4">Leuwimalang</h2>
+              <p class="text-xl mb-8">Desa Wisata</p>
+              <div class="space-y-4">
+                <div class="flex items-center text-lg">
+                  <iconify-icon
+                    icon="mdi:check-circle"
+                    class="text-green-400 mr-3 text-xl"
+                  ></iconify-icon>
+                  <span>Liburan Asik & Menyenangkan</span>
+                </div>
+                <div class="flex items-center text-lg">
+                  <iconify-icon
+                    icon="mdi:check-circle"
+                    class="text-green-400 mr-3 text-xl"
+                  ></iconify-icon>
+                  <span>Penuh Edukasi dan Pengetahuan</span>
+                </div>
+                <div class="flex items-center text-lg">
+                  <iconify-icon
+                    icon="mdi:check-circle"
+                    class="text-green-400 mr-3 text-xl"
+                  ></iconify-icon>
+                  <span>Menyatu dengan Budaya & Alam</span>
+                </div>
               </div>
             </div>
-            <div class="mb-6">
-              <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-              <div class="relative">
-                <iconify-icon icon="mdi:lock" class="absolute text-gray-500 top-3 left-3"></iconify-icon>
-                <input type="password" id="password" name="password" class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500" placeholder="Enter your password" required>
-              </div>
-            </div>
-            <button type="submit" class="w-full bg-green-600 text-white rounded-lg px-4 py-2 hover:bg-green-700 focus:outline-none focus:shadow-outline">
-              Log In
-            </button>
-          </form>
-          <div class="mt-4 text-center">
-            <p class="text-gray-600">Don't have an account? <a href="/auth/register" class="text-green-600 font-bold">Register here</a></p>
+          </div>
         </div>
-     
-    </div>
-</body>
+
+        <!-- Right Side - Login Form -->
+        <div class="bg-white p-8 rounded-xl shadow-sm h-[520px] flex flex-col">
+          <div class="max-w-lg mx-auto w-full">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">
+              Selamat Datang Kembali!
+            </h2>
+            <p class="text-gray-600 mb-8">
+              Silakan masuk ke akun Anda untuk melanjutkan
+            </p>
+
+            <!-- Error Message -->
+            <% if (errorMessage.length > 0) { %>
+            <div
+              class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative text-center mb-6"
+            >
+              <p><%= errorMessage %></p>
+            </div>
+            <% } %>
+
+            <!-- Login Form -->
+            <form action="/auth/login" method="POST" class="space-y-6">
+              <div>
+                <label for="email" class="block text-gray-700 font-medium mb-2"
+                  >Email</label
+                >
+                <div class="relative">
+                  <iconify-icon
+                    icon="mdi:email"
+                    class="absolute text-gray-500 top-3 left-3"
+                  ></iconify-icon>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500 transition-colors"
+                    placeholder="masukkan email anda"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="password"
+                  class="block text-gray-700 font-medium mb-2"
+                  >Kata Sandi</label
+                >
+                <div class="relative">
+                  <iconify-icon
+                    icon="mdi:lock"
+                    class="absolute text-gray-500 top-3 left-3"
+                  ></iconify-icon>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="w-full pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500 transition-colors"
+                    placeholder="masukkan kata sandi"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    name="remember"
+                    class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                  />
+                  <label
+                    for="remember"
+                    class="ml-2 block text-sm text-gray-700"
+                  >
+                    Ingat saya
+                  </label>
+                </div>
+                <a
+                  href="/auth/forgot-password"
+                  class="text-sm text-green-600 hover:text-green-500"
+                >
+                  Lupa kata sandi?
+                </a>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="pt-6">
+                <button
+                  type="submit"
+                  class="w-full bg-green-600 text-white rounded-lg px-4 py-3 font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                >
+                  Masuk
+                </button>
+              </div>
+            </form>
+
+            <!-- Register Link -->
+            <div class="mt-6 text-center">
+              <p class="text-gray-600">
+                Belum punya akun?
+                <a
+                  href="/auth/register"
+                  class="text-green-600 font-medium hover:text-green-500"
+                >
+                  Daftar sekarang
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

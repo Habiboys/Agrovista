@@ -1,394 +1,562 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Desa Wisata Leuwi Malang</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
+  <head>
+    <title>Desa Wisata Leuwi Malang</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
 
-<body class="font-sans bg-gray-50">
-  <%- include('partials/navbar') %>
-  <!-- Chat Icon -->
-  <div id="chat-icon" class="fixed bottom-5 right-5 bg-green-600 hover:bg-green-700 text-white rounded-full p-4 cursor-pointer shadow-lg z-40 transition-all">
-    <i data-lucide="message-circle" class="w-6 h-6"></i>
-  </div>
+  <body class="font-sans bg-gray-50">
+    <%- include('partials/navbar') %>
+    <!-- Chat Icon -->
+    <div
+      id="chat-icon"
+      class="fixed bottom-5 right-5 bg-green-600 hover:bg-green-700 text-white rounded-full p-4 cursor-pointer shadow-lg z-40 transition-all"
+    >
+      <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </div>
 
-  <!-- Chat Window -->
-  <div id="chat-window" class="hidden fixed bottom-20 right-5 w-96 bg-white rounded-xl shadow-2xl z-50 border border-gray-100">
-    <div class="bg-green-600 text-white p-4 rounded-t-xl">
-      <h3 class="font-bold text-lg">Tanya Mr Noid</h3>
+    <!-- Chat Window -->
+    <div
+      id="chat-window"
+      class="hidden fixed bottom-20 right-5 w-96 bg-white rounded-xl shadow-2xl z-50 border border-gray-100"
+    >
+      <div class="bg-green-600 text-white p-4 rounded-t-xl">
+        <h3 class="font-bold text-lg">Tanya Mr Noid</h3>
+      </div>
+      <div id="chat-messages" class="h-96 overflow-y-auto p-4 bg-gray-50">
+        <!-- Chat messages will be appended here -->
+      </div>
+      <div class="p-4 border-t bg-white rounded-b-xl">
+        <input
+          id="user-input"
+          type="text"
+          placeholder="Ketik pesan Anda..."
+          class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        />
+        <button
+          id="send-btn"
+          class="mt-2 w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          Kirim
+        </button>
+      </div>
     </div>
-    <div id="chat-messages" class="h-96 overflow-y-auto p-4 bg-gray-50">
-      <!-- Chat messages will be appended here -->
-    </div>
-    <div class="p-4 border-t bg-white rounded-b-xl">
-      <input id="user-input" type="text" placeholder="Ketik pesan Anda..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" />
-      <button id="send-btn" class="mt-2 w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-        Kirim
-      </button>
-    </div>
-  </div>
 
-  <!-- Hero Section -->
-  <div class="relative h-[600px] bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1655761940444-b666fd26f685?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-    <div class="absolute inset-0 bg-black bg-opacity-60">
-      <div class="container mx-auto h-full flex flex-col justify-center items-start px-8 md:px-12">
-        <h1 class="text-white text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-3xl">
-          Jelajahi Keindahan Desa Wisata Leuwi Malang
-        </h1>
-        <p class="text-gray-200 text-xl mb-8 max-w-2xl leading-relaxed">
-          Temukan keajaiban alam, budaya, dan kuliner khas yang menunggu untuk dieksplorasi di destinasi wisata terbaik kami.
-        </p>
-        <div class="space-x-4">
-          <a href="/ulasan" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-colors inline-flex items-center">
-            <i class="fas fa-star mr-2"></i>
-            Beri Ulasan
-          </a>
-          <button class="bg-white hover:bg-gray-100 text-green-700 px-8 py-4 rounded-full text-lg font-semibold transition-colors inline-flex items-center">
-            <i class="fas fa-info-circle mr-2"></i>
-            Selengkapnya
+    <!-- Hero Section -->
+    <div
+      class="relative h-[600px] bg-cover bg-center bg-fixed"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1655761940444-b666fd26f685?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      "
+    >
+      <div class="absolute inset-0 bg-black bg-opacity-60">
+        <div
+          class="container mx-auto h-full flex flex-col justify-center items-start px-8 md:px-12"
+        >
+          <h1
+            class="text-white text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-3xl"
+          >
+            Jelajahi Keindahan Desa Wisata Leuwi Malang
+          </h1>
+          <p class="text-gray-200 text-xl mb-8 max-w-2xl leading-relaxed">
+            Temukan keajaiban alam, budaya, dan kuliner khas yang menunggu untuk
+            dieksplorasi di destinasi wisata terbaik kami.
+          </p>
+          <div class="space-x-4">
+            <a
+              href="/ulasan"
+              class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-colors inline-flex items-center"
+            >
+              <i class="fas fa-star mr-2"></i>
+              Beri Ulasan
+            </a>
+            <button
+              class="bg-white hover:bg-gray-100 text-green-700 px-8 py-4 rounded-full text-lg font-semibold transition-colors inline-flex items-center"
+            >
+              <i class="fas fa-info-circle mr-2"></i>
+              Selengkapnya
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-br from-white to-green-50 py-16 shadow-md relative z-10"
+    >
+      <div class="container mx-auto px-4">
+        <!-- Judul Section -->
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-green-800 mb-2">
+            Statistik Desa Wisata
+          </h2>
+          <div class="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <!-- Pengunjung -->
+          <div
+            class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100"
+          >
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-users text-4xl"></i>
+            </div>
+            <div class="text-4xl font-bold text-green-600 mb-2 animate-count">
+              350+
+            </div>
+            <div class="text-gray-600 font-medium">Pengunjung</div>
+          </div>
+
+          <!-- Ulasan -->
+          <div
+            class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100"
+          >
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-star text-4xl"></i>
+            </div>
+            <div class="text-4xl font-bold text-green-600 mb-2">
+              <%= total_ulasan %>
+            </div>
+            <div class="text-gray-600 font-medium">Ulasan</div>
+          </div>
+
+          <!-- Jenis Wisata -->
+          <div
+            class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100"
+          >
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-map-marked-alt text-4xl"></i>
+            </div>
+            <div class="text-4xl font-bold text-green-600 mb-2">
+              <%= total_wisata %>
+            </div>
+            <div class="text-gray-600 font-medium">Jenis Wisata</div>
+          </div>
+
+          <!-- Produk -->
+          <div
+            class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100"
+          >
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-store text-4xl"></i>
+            </div>
+            <div class="text-4xl font-bold text-green-600 mb-2">
+              <%= total_produk %>
+            </div>
+            <div class="text-gray-600 font-medium">Produk</div>
+          </div>
+
+          <!-- Paket Wisata -->
+          <div
+            class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100"
+          >
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-route text-4xl"></i>
+            </div>
+            <div class="text-4xl font-bold text-green-600 mb-2">5</div>
+            <div class="text-gray-600 font-medium">Paket Wisata</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tambahkan decorative elements -->
+      <div
+        class="absolute top-0 left-0 w-32 h-32 bg-green-100 rounded-full -translate-x-16 -translate-y-16 opacity-50"
+      ></div>
+      <div
+        class="absolute bottom-0 right-0 w-24 h-24 bg-green-200 rounded-full translate-x-12 translate-y-12 opacity-50"
+      ></div>
+    </div>
+
+    <!-- About Us -->
+    <div class="container mx-auto py-24">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center px-4">
+        <div class="relative">
+          <img
+            src="https://images.unsplash.com/photo-1620799180805-b4e4c568a245?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="About Us"
+            class="rounded-2xl shadow-2xl w-full h-[500px] object-cover"
+          />
+          <div
+            class="absolute -bottom-6 -right-6 w-48 h-48 bg-green-600 rounded-2xl -z-10"
+          ></div>
+        </div>
+        <div>
+          <h2 class="text-4xl font-bold text-gray-800 mb-6">Tentang Kami</h2>
+          <div class="w-20 h-1 bg-green-600 mb-6"></div>
+          <p class="text-gray-600 text-lg leading-relaxed mb-6">
+            Desa Wisata Leuwi Malang adalah destinasi yang menawarkan pengalaman
+            unik perpaduan alam, budaya, dan kehidupan pedesaan yang autentik.
+            Kami berkomitmen untuk melestarikan kearifan lokal sambil
+            mengembangkan potensi wisata yang berkelanjutan.
+          </p>
+          <p class="text-gray-600 text-lg leading-relaxed">
+            Nikmati keindahan alam yang masih asri, kuliner khas yang menggugah
+            selera, dan keramahan masyarakat lokal yang akan membuat kunjungan
+            Anda berkesan.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agrotourism -->
+    <div class="bg-gray-50 py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Agroturisme</h2>
+          <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <% jenisWisata.forEach((jeniswisata) => { %>
+          <div
+            class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <img
+              src="1/<%= jeniswisata.gambar %>"
+              alt="<%= jeniswisata.nama_wisata %>"
+              class="w-full h-64 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-3">
+                <%= jeniswisata.nama_wisata %>
+              </h3>
+              <p class="text-gray-600"><%= jeniswisata.deskripsi %></p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Reviews -->
+    <div class="py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Ulasan Terbaru</h2>
+          <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+        </div>
+        <% if(dataUlasan.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <% dataUlasan.forEach((dataulasan) => { %>
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+          >
+            <div class="flex items-center mb-6">
+              <img
+                src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61"
+                alt="<%= dataulasan.nama %>"
+                class="w-16 h-16 rounded-full object-cover mr-4"
+              />
+              <div>
+                <h3 class="font-bold text-lg text-gray-800">
+                  <%= dataulasan.nama %>
+                </h3>
+                <p class="text-gray-500"><%= dataulasan.pekerjaan %></p>
+              </div>
+            </div>
+            <p class="text-gray-600 leading-relaxed">
+              <%= dataulasan.ulasan %>
+            </p>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div class="text-center">
+          <h1 class="text-2xl font-bold text-gray-700">Belum Ada Ulasan</h1>
+          <p class="text-gray-600 mt-2">
+            Jadilah yang pertama memberikan ulasan!
+          </p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- QR Scanner Section -->
+    <div class="bg-gray-50 py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">
+            Jelajahi Produk Kami
+          </h2>
+          <div class="w-20 h-1 bg-green-600 mx-auto mb-8"></div>
+          <p class="text-lg text-gray-600 mb-8">
+            Pindai QR code untuk mendapatkan informasi lengkap tentang produk,
+            aktivitas, dan destinasi menarik di desa kami!
+          </p>
+          <button
+            id="openScannerButton"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
+          >
+            <i class="fas fa-qrcode mr-2"></i>
+            Buka Scanner QR Code
           </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="bg-gradient-to-br from-white to-green-50 py-16 shadow-md relative z-10">
-    <div class="container mx-auto px-4">
-      <!-- Judul Section -->
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-green-800 mb-2">Statistik Desa Wisata</h2>
-        <div class="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
-      </div>
-      
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
-        <!-- Pengunjung -->
-        <div class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100">
-          <div class="text-green-500 mb-4">
-            <i class="fas fa-users text-4xl"></i>
+    <!-- Scanner Modal -->
+    <div
+      id="scannerModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50"
+    >
+      <div class="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full mx-4">
+        <div class="text-center">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Scanner QR Code</h3>
+          <div
+            id="scanner-container"
+            class="relative w-72 h-72 mx-auto bg-gray-100 rounded-xl overflow-hidden"
+          >
+            <video
+              id="video"
+              class="absolute inset-0 w-full h-full object-cover"
+            ></video>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-48 h-48 border-2 border-green-500 rounded-lg"></div>
+            </div>
+            <div
+              class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-green-500"
+            ></div>
+            <div
+              class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-green-500"
+            ></div>
+            <div
+              class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-green-500"
+            ></div>
+            <div
+              class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-green-500"
+            ></div>
           </div>
-          <div class="text-4xl font-bold text-green-600 mb-2 animate-count">350+</div>
-          <div class="text-gray-600 font-medium">Pengunjung</div>
-        </div>
-  
-        <!-- Ulasan -->
-        <div class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100">
-          <div class="text-green-500 mb-4">
-            <i class="fas fa-star text-4xl"></i>
-          </div>
-          <div class="text-4xl font-bold text-green-600 mb-2"><%= total_ulasan %></div>
-          <div class="text-gray-600 font-medium">Ulasan</div>
-        </div>
-  
-        <!-- Jenis Wisata -->
-        <div class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100">
-          <div class="text-green-500 mb-4">
-            <i class="fas fa-map-marked-alt text-4xl"></i>
-          </div>
-          <div class="text-4xl font-bold text-green-600 mb-2"><%= total_wisata %></div>
-          <div class="text-gray-600 font-medium">Jenis Wisata</div>
-        </div>
-  
-        <!-- Produk -->
-        <div class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100">
-          <div class="text-green-500 mb-4">
-            <i class="fas fa-store text-4xl"></i>
-          </div>
-          <div class="text-4xl font-bold text-green-600 mb-2"><%= total_produk %></div>
-          <div class="text-gray-600 font-medium">Produk</div>
-        </div>
-  
-        <!-- Paket Wisata -->
-        <div class="bg-white p-6 rounded-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-green-100">
-          <div class="text-green-500 mb-4">
-            <i class="fas fa-route text-4xl"></i>
-          </div>
-          <div class="text-4xl font-bold text-green-600 mb-2">5</div>
-          <div class="text-gray-600 font-medium">Paket Wisata</div>
+          <div id="result" class="mt-6 text-lg font-medium text-gray-600"></div>
+          <button
+            id="closeScannerButton"
+            class="mt-6 py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-lg transition-colors"
+          >
+            <i class="fas fa-times mr-2"></i>
+            Tutup Scanner
+          </button>
         </div>
       </div>
     </div>
-  
-    <!-- Tambahkan decorative elements -->
-    <div class="absolute top-0 left-0 w-32 h-32 bg-green-100 rounded-full -translate-x-16 -translate-y-16 opacity-50"></div>
-    <div class="absolute bottom-0 right-0 w-24 h-24 bg-green-200 rounded-full translate-x-12 translate-y-12 opacity-50"></div>
-  </div>
 
-  <!-- About Us -->
-  <div class="container mx-auto py-24">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center px-4">
-      <div class="relative">
-        <img src="https://images.unsplash.com/photo-1620799180805-b4e4c568a245?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-             alt="About Us" 
-             class="rounded-2xl shadow-2xl w-full h-[500px] object-cover" />
-        <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-green-600 rounded-2xl -z-10"></div>
+    <!-- Rewards Section -->
+    <div class="py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">
+            Dapatkan Rewards untuk Ulasanmu! 🌟
+          </h2>
+          <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            <div class="text-5xl mb-6">✍</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Tulis Ulasan</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Bagikan pengalaman wisata tak terlupakan Anda di Desa Leuwi Malang
+              dan inspirasi pengunjung lainnya.
+            </p>
+          </div>
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            <div class="text-5xl mb-6">💎</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3">
+              Kumpulkan Point
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Dapatkan 50 point untuk setiap ulasan berkualitas yang Anda
+              berikan. Semakin detail, semakin baik!
+            </p>
+          </div>
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            <div class="text-5xl mb-6">🎁</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Tukar Rewards</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Tukarkan point Anda dengan berbagai produk menarik dan pengalaman
+              wisata eksklusif.
+            </p>
+          </div>
+        </div>
       </div>
-      <div>
-        <h2 class="text-4xl font-bold text-gray-800 mb-6">Tentang Kami</h2>
-        <div class="w-20 h-1 bg-green-600 mb-6"></div>
-        <p class="text-gray-600 text-lg leading-relaxed mb-6">
-          Desa Wisata Leuwi Malang adalah destinasi yang menawarkan pengalaman unik perpaduan alam, budaya, dan kehidupan pedesaan yang autentik. Kami berkomitmen untuk melestarikan kearifan lokal sambil mengembangkan potensi wisata yang berkelanjutan.
+    </div>
+
+    <!-- Gallery -->
+    <div class="relative py-24 overflow-hidden">
+      <div class="absolute inset-0 bg-green-600 transform -skew-y-6"></div>
+      <div class="relative container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-white mb-6">
+          Siap Untuk Berpetualang?
+        </h2>
+        <p class="text-gray-100 text-lg mb-8 max-w-2xl mx-auto">
+          Jangan lewatkan kesempatan untuk menjelajahi keindahan Desa Wisata
+          Leuwi Malang. Pesan sekarang dan dapatkan pengalaman tak terlupakan!
         </p>
-        <p class="text-gray-600 text-lg leading-relaxed">
-          Nikmati keindahan alam yang masih asri, kuliner khas yang menggugah selera, dan keramahan masyarakat lokal yang akan membuat kunjungan Anda berkesan.
-        </p>
+        <button
+          class="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
+        >
+          Pesan Sekarang
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- Agrotourism -->
-  <div class="bg-gray-50 py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Agroturisme</h2>
-        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <% jenisWisata.forEach((jeniswisata) => { %>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-          <img src="1/<%= jeniswisata.gambar %>" alt="<%= jeniswisata.nama_wisata %>" class="w-full h-64 object-cover" />
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-3"><%= jeniswisata.nama_wisata %></h3>
-            <p class="text-gray-600"><%= jeniswisata.deskripsi %></p>
-          </div>
+    <div class="bg-gray-50 py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Galeri Wisata</h2>
+          <div class="w-20 h-1 bg-green-600 mx-auto"></div>
         </div>
-        <% }) %>
-      </div>
-    </div>
-  </div>
-
-  <!-- Latest Reviews -->
-  <div class="py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Ulasan Terbaru</h2>
-        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
-      </div>
-      <% if(dataUlasan.length > 0) { %>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <% dataUlasan.forEach((dataulasan) => { %>
-        <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-          <div class="flex items-center mb-6">
-            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61" 
-                 alt="<%= dataulasan.nama %>" 
-                 class="w-16 h-16 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-lg text-gray-800"><%= dataulasan.nama %></h3>
-              <p class="text-gray-500"><%= dataulasan.pekerjaan %></p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1677618164836-1af1646e4ab0?q=80&w=2034&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 1"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
             </div>
           </div>
-          <p class="text-gray-600 leading-relaxed"><%= dataulasan.ulasan %></p>
-        </div>
-        <% }) %>
-      </div>
-      <% } else { %>
-      <div class="text-center">
-        <h1 class="text-2xl font-bold text-gray-700">Belum Ada Ulasan</h1>
-        <p class="text-gray-600 mt-2">Jadilah yang pertama memberikan ulasan!</p>
-      </div>
-      <% } %>
-    </div>
-  </div>
-
-  <!-- QR Scanner Section -->
-  <div class="bg-gray-50 py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Jelajahi Produk Kami</h2>
-        <div class="w-20 h-1 bg-green-600 mx-auto mb-8"></div>
-        <p class="text-lg text-gray-600 mb-8">
-          Pindai QR code untuk mendapatkan informasi lengkap tentang produk, aktivitas, dan destinasi menarik di desa kami!
-        </p>
-        <button id="openScannerButton" 
-                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">
-          <i class="fas fa-qrcode mr-2"></i>
-          Buka Scanner QR Code
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scanner Modal -->
-  <div id="scannerModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full mx-4">
-      <div class="text-center">
-        <h3 class="text-2xl font-bold text-gray-800 mb-6">Scanner QR Code</h3>
-        <div id="scanner-container" class="relative w-72 h-72 mx-auto bg-gray-100 rounded-xl overflow-hidden">
-          <video id="video" class="absolute inset-0 w-full h-full object-cover"></video>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-48 h-48 border-2 border-green-500 rounded-lg"></div>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1541270691237-da75a9617329?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 2"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
+            </div>
           </div>
-          <div class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-green-500"></div>
-          <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-green-500"></div>
-          <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-green-500"></div>
-          <div class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-green-500"></div>
-        </div>
-        <div id="result" class="mt-6 text-lg font-medium text-gray-600"></div>
-        <button id="closeScannerButton" 
-                class="mt-6 py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-lg transition-colors">
-          <i class="fas fa-times mr-2"></i>
-          Tutup Scanner
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Rewards Section -->
-  <div class="py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Dapatkan Rewards untuk Ulasanmu! 🌟</h2>
-        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-          <div class="text-5xl mb-6">✍</div>
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Tulis Ulasan</h3>
-          <p class="text-gray-600 leading-relaxed">Bagikan pengalaman wisata tak terlupakan Anda di Desa Leuwi Malang dan inspirasi pengunjung lainnya.</p>
-        </div>
-        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-          <div class="text-5xl mb-6">💎</div>
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Kumpulkan Point</h3>
-          <p class="text-gray-600 leading-relaxed">Dapatkan 50 point untuk setiap ulasan berkualitas yang Anda berikan. Semakin detail, semakin baik!</p>
-        </div>
-        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-          <div class="text-5xl mb-6">🎁</div>
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Tukar Rewards</h3>
-          <p class="text-gray-600 leading-relaxed">Tukarkan point Anda dengan berbagai produk menarik dan pengalaman wisata eksklusif.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Gallery -->
-  <div class="relative py-24 overflow-hidden">
-    <div class="absolute inset-0 bg-green-600 transform -skew-y-6"></div>
-    <div class="relative container mx-auto px-4 text-center">
-      <h2 class="text-4xl font-bold text-white mb-6">Siap Untuk Berpetualang?</h2>
-      <p class="text-gray-100 text-lg mb-8 max-w-2xl mx-auto">
-        Jangan lewatkan kesempatan untuk menjelajahi keindahan Desa Wisata Leuwi Malang. Pesan sekarang dan dapatkan pengalaman tak terlupakan!
-      </p>
-      <button class="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors">
-        Pesan Sekarang
-      </button>
-    </div>
-  </div>
-
-  <div class="bg-gray-50 py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Galeri Wisata</h2>
-        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/photo-1677618164836-1af1646e4ab0?q=80&w=2034&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 1"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1503521645102-f0c28f44ac17?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 3"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/photo-1541270691237-da75a9617329?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 2"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2041&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 4"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/photo-1503521645102-f0c28f44ac17?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 3"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 5"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2041&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 4"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
-          </div>
-        </div>
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 5"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
-          </div>
-        </div>
-        <div class="group relative overflow-hidden rounded-xl shadow-lg">
-          <img src="https://images.unsplash.com/reserve/wPCyys8TPCHY3GXm2N2D_ssp_inthewoods_1.jpg?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               alt="Gallery 6"
-               class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              Lihat Detail
-            </button>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img
+              src="https://images.unsplash.com/reserve/wPCyys8TPCHY3GXm2N2D_ssp_inthewoods_1.jpg?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Gallery 6"
+              class="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            >
+              <button
+                class="bg-white text-gray-800 px-6 py-2 rounded-full font-semibold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              >
+                Lihat Detail
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Call to Action -->
+    <!-- Call to Action -->
 
+    <%- include('partials/footer') %>
 
-  <%- include('partials/footer') %>
+    <script src="/js/scanqr.js"></script>
+    <script src="/js/chat.js"></script>
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
 
-  <script src="/js/scanqr.js"></script>
-  <script src="/js/chat.js"></script>
-  <script src="https://unpkg.com/@zxing/library@latest"></script>
-    
-  <!-- Optional: Tambahkan script untuk animasi counting -->
-  <script>
-    function animateValue(element, start, end, duration) {
-      let current = start;
-      const range = end - start;
-      const increment = end > start ? 1 : -1;
-      const stepTime = Math.abs(Math.floor(duration / range));
-      
-      const timer = setInterval(() => {
-        current += increment;
-        element.textContent = current + "+";
-        if (current == end) {
-          clearInterval(timer);
-        }
-      }, stepTime);
-    }
-  
-    // Animate visitor count when element comes into view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const counterElements = document.querySelectorAll('.animate-count');
-          counterElements.forEach(counter => {
-            const target = parseInt(counter.textContent);
-            animateValue(counter, 0, target, 2000);
-          });
-          observer.unobserve(entry.target);
-        }
+    <!-- Optional: Tambahkan script untuk animasi counting -->
+    <script>
+      function animateValue(element, start, end, duration) {
+        let current = start;
+        const range = end - start;
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+
+        const timer = setInterval(() => {
+          current += increment;
+          element.textContent = current + "+";
+          if (current == end) {
+            clearInterval(timer);
+          }
+        }, stepTime);
+      }
+
+      // Animate visitor count when element comes into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counterElements = document.querySelectorAll(".animate-count");
+            counterElements.forEach((counter) => {
+              const target = parseInt(counter.textContent);
+              animateValue(counter, 0, target, 2000);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
       });
-    });
-  
-    document.querySelectorAll('.animate-count').forEach(counter => {
-      observer.observe(counter);
-    });
-  </script>
-</body>
+
+      document.querySelectorAll(".animate-count").forEach((counter) => {
+        observer.observe(counter);
+      });
+    </script>
+  </body>
 </html>

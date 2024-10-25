@@ -23,7 +23,7 @@ const daftarWisata = async (req, res) => {
     console.error("Error fetching data:", error);
     next(error);
   }
-}
+};
 
 const simpan = async (req, res) => {
   try {
@@ -55,7 +55,7 @@ const simpan = async (req, res) => {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
   }
-}
+};
 
 const edit = async (req, res) => {
   try {
@@ -71,7 +71,8 @@ const edit = async (req, res) => {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
   }
-}
+};
+
 const update = async (req, res) => {
   try {
     const id = req.params.id;
@@ -103,7 +104,8 @@ const update = async (req, res) => {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi kesalahan", error });
   }
-}
+};
+
 const hapus = async (req, res) => {
   try {
     const id = req.params.id;
@@ -123,12 +125,13 @@ const hapus = async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: "Terjadi kesalahan" });
   }
-}
+};
 
 module.exports = {
   daftarWisata,
   simpan,
   edit,
   update,
-  hapus
-}
+  hapus,
+};
+
