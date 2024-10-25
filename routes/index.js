@@ -2,6 +2,7 @@ const ulasan = require("../controller/admin/ulasan");
 const dashboard = require("../controller/admin/dashboard");
 const produk = require("../controller/admin/produk");
 const wisata = require("../controller/admin/wisata");
+const monitoring = require("../controller/admin/monitoring");
 
 var express = require("express");
 var router = express.Router();
@@ -21,7 +22,7 @@ function isAuthenticated(req, res, next) {
 router.get("/", async (req, res) => {
 
 
-  const user= await User.findByPk(req.session.userId)
+  const user = await User.findByPk(req.session.userId)
 
 
   const total_ulasan = await DataUlasan.count();
@@ -52,7 +53,7 @@ router.get("/ulasan", async function (req, res, next) {
     // Fetch all records from the DataUlasan table
     const ulasanData = await DataUlasan.findAll();
     const jenisWisata = await JenisWisata.findAll();
-    const user= await User.findByPk(req.session.userId)
+    const user = await User.findByPk(req.session.userId)
 
     // Log the results to the console
     console.log(ulasanData);
@@ -66,16 +67,17 @@ router.get("/ulasan", async function (req, res, next) {
 });
 router.get("/profile", async function (req, res, next) {
   try {
-    const user= await User.findByPk(req.session.userId,{
+    const user = await User.findByPk(req.session.userId, {
       include: [
         {
           model: DataDiri,
-      
+
         },
-    ]} )
+      ]
+    })
     console.log(user);
 
-    res.render("profile", { title: "profile", user});
+    res.render("profile", { title: "profile", user });
   } catch (error) {
     console.error("Error fetching data:", error);
     next(error);
@@ -145,31 +147,37 @@ router.post("/chat", async (req, res) => {
   }
 });
 
-router.get("/admin/dataulasan/analisis",isAuthenticated, ulasan.analisisUlasan);
+router.get("/admin/dataulasan/analisis", isAuthenticated, ulasan.analisisUlasan);
 router.get("/admin/dataulasan", isAuthenticated, ulasan.dataUlasan);
 router.get("/admin/dashboard", isAuthenticated, dashboard.store);
 
 // JENIS WISATA==========================================================
 router.get("/admin/jenis-wisata", isAuthenticated, wisata.daftarWisata);
-router.get("/admin/jenis-wisata/add-wisata", isAuthenticated, async (req, res) => { res.render("addwisata", { title: "Tambah Wisata" });});
+router.get("/admin/jenis-wisata/add-wisata", isAuthenticated, async (req, res) => { res.render("addwisata", { title: "Tambah Wisata" }); });
 router.post("/admin/jenis-wisata/tambah-wisata", upload.single("gambar"), wisata.simpan);
-router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated, );
-router.post( "/admin/jenis-wisata/edit-wisata/:id",upload.single("gambar"),wisata.update);
-router.delete("/admin/jenis-wisata/delete-wisata/:id", wisata.hapus );
+router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated,);
+router.post("/admin/jenis-wisata/edit-wisata/:id", upload.single("gambar"), wisata.update);
+router.delete("/admin/jenis-wisata/delete-wisata/:id", wisata.hapus);
 
 // PRODUK=======================================================
 router.get("/admin/produk", isAuthenticated, produk.listProduk);
 router.get("/admin/add-produk", isAuthenticated, produk.tambah);
-router.post("/admin/tambah-produk",isAuthenticated,
-upload.fields([
+router.post("/admin/tambah-produk", isAuthenticated,
+  upload.fields([
     { name: "gambar", maxCount: 1 },
     { name: "sertifikasi_halal", maxCount: 1 },
   ]),
   produk.simpan
 );
 router.get("/admin/edit-produk/:id", isAuthenticated, produk.edit);
-router.post( "/admin/edit-produk/:id",upload.single("gambar"), produk.update);
+router.post("/admin/edit-produk/:id", upload.single("gambar"), produk.update);
 router.delete("/admin/delete-produk/:id", isAuthenticated, produk.hapus);
 router.get("/detail-produk/:hashId", isAuthenticated, produk.detail);
+
+
+//MONITORING
+router.get("/admin/monitoring", isAuthenticated, monitoring.view);
+router.post('/admin/getdatamonitoring', monitoring.receiveData);
+
 
 module.exports = router;

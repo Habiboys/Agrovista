@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroWista - Monitoring</title>
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <%- include('partials/sidebar') %>
+
+      <!-- Main content -->
+      <div class="flex-1 overflow-y-auto">
+        <header class="bg-white shadow">
+          <div class="flex justify-between items-center px-4 py-3">
+            <h2 class="text-xl font-semibold">Monitoring</h2>
+            <div class="flex items-center">
+              <input
+                type="text"
+                placeholder="Search"
+                class="px-3 py-1 border rounded-md mr-4"
+              />
+              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+        </header>
+
+        <main id="main-content" class="p-6">
+          <div>
+            <h1>Data Sensor Real-Time</h1>
+            <div id="sensorData">
+              <p>
+                <strong>Kelembapan Tanah:</strong>
+                <span id="soilMoisture">Loading...</span>%
+              </p>
+              <p>
+                <strong>Suhu:</strong>
+                <span id="temperature">Loading...</span>°C
+              </p>
+              <p>
+                <strong>Kelembapan:</strong>
+                <span id="humidity">Loading...</span>%
+              </p>
+            </div>
+
+            <!-- Script to connect to Socket.IO and update sensor data -->
+            <script>
+              const socket = io();
+
+              socket.on("sensorData", (data) => {
+                console.log("Data received from server:", data);
+                document.getElementById("soilMoisture").innerText =
+                  data.soilMoisture;
+                document.getElementById("temperature").innerText =
+                  data.temperature;
+                document.getElementById("humidity").innerText = data.humidity;
+              });
+            </script>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
