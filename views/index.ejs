@@ -249,14 +249,18 @@
             <div class="flex items-center mb-6">
               <img
                 src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61"
-                alt="<%= dataulasan.nama %>"
+                alt="<%= dataulasan.DataDiri ? dataulasan.DataDiri.nama : 'Pengguna' %>"
                 class="w-16 h-16 rounded-full object-cover mr-4"
               />
               <div>
                 <h3 class="font-bold text-lg text-gray-800">
-                  <%= dataulasan.nama %>
+                  <%= dataulasan.DataDiri ? dataulasan.DataDiri.nama :
+                  'Pengguna' %>
                 </h3>
-                <p class="text-gray-500"><%= dataulasan.pekerjaan %></p>
+                <p class="text-gray-500">
+                  <%= dataulasan.DataDiri ? dataulasan.DataDiri.pekerjaan :
+                  'Job' %>
+                </p>
               </div>
             </div>
             <p class="text-gray-600 leading-relaxed">
