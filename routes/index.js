@@ -134,10 +134,8 @@ router.post("/kirim-ulasan", async (req, res) => {
       ulasan,
     });
 
-    // Panggilan API eksternal jika diperlukan
-    // await axios.get("http://localhost:5000/predict");
     console.log("Data saved:", data);
-    res.status(201).json({ message: "Ulasan berhasil dikirim", data });
+    res.redirect("/ulasan");
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
@@ -164,7 +162,11 @@ router.get(
   isAuthenticated,
   ulasan.analisisUlasan
 );
-router.get("/admin/dataulasan/analisis", isAuthenticated, ulasan.analisisUlasan);
+router.get(
+  "/admin/dataulasan/analisis",
+  isAuthenticated,
+  ulasan.analisisUlasan
+);
 router.get("/admin/dataulasan", isAuthenticated, ulasan.dataUlasan);
 router.get("/admin/dashboard", isAuthenticated, dashboard.store);
 router.post("/admin/simpan-point", isAuthenticated, ulasan.simpanPoint);
@@ -183,7 +185,7 @@ router.post(
   upload.single("gambar"),
   wisata.simpan
 );
-router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated);
+router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated, wisata.edit);
 router.post(
   "/admin/jenis-wisata/edit-wisata/:id",
   upload.single("gambar"),
@@ -208,10 +210,8 @@ router.post("/admin/edit-produk/:id", upload.single("gambar"), produk.update);
 router.delete("/admin/delete-produk/:id", isAuthenticated, produk.hapus);
 router.get("/detail-produk/:hashId", isAuthenticated, produk.detail);
 
-
 //MONITORING
 router.get("/admin/monitoring", isAuthenticated, monitoring.view);
-router.post('/admin/getdatamonitoring', monitoring.receiveData);
-
+router.post("/admin/getdatamonitoring", monitoring.receiveData);
 
 module.exports = router;

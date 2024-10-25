@@ -50,7 +50,7 @@ const simpan = async (req, res) => {
       gambar: gambar, // Simpan path gambar yang diunggah
     });
 
-    res.status(201).json({ message: "Wisata berhasil ditambahkan", wisata });
+    res.redirect("/admin/jenis-wisata");
   } catch (error) {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
@@ -99,7 +99,7 @@ const update = async (req, res) => {
       where: { id },
     });
 
-    res.status(200).json({ message: "Wisata berhasil diperbarui" });
+    res.redirect("/admin/jenis-wisata");
   } catch (error) {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi kesalahan", error });
@@ -134,4 +134,3 @@ module.exports = {
   update,
   hapus,
 };
-

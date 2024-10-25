@@ -64,12 +64,16 @@ const store = async (req, res, next) => {
         {
           model: JenisWisata,
           attributes: ["id", "nama_wisata"],
-          as:'jenisWisata'
+          as: "jenisWisata",
         },
       ],
     });
 
-    const labels = reviewCounts.map((review) => review.jenisWisata ? review.jenisWisata.nama_wisata : null).filter(Boolean);
+    const labels = reviewCounts
+      .map((review) =>
+        review.jenisWisata ? review.jenisWisata.nama_wisata : null
+      )
+      .filter(Boolean);
     const data = reviewCounts.map((review) => review.dataValues.count);
 
     const tourismTypes = await JenisWisata.findAll({
@@ -99,13 +103,15 @@ const store = async (req, res, next) => {
           {
             model: JenisWisata,
             attributes: ["id", "nama_wisata"],
-            as: 'jenisWisata'
+            as: "jenisWisata",
           },
         ],
       });
 
       reviewCounts.forEach((review) => {
-        const index = label.indexOf(review.JenisWisata ? review.jenisWisata.nama_wisata : null);
+        const index = label.indexOf(
+          review.JenisWisata ? review.jenisWisata.nama_wisata : null
+        );
         if (index !== -1) {
           if (sentiment === "Positif") {
             chartData.positif[index] = review.dataValues.count;
@@ -130,11 +136,14 @@ const store = async (req, res, next) => {
     const umurCounts = await Promise.all(
       umurRanges.map(async (range) => {
         return await DataUlasan.count({
-          include: [{
-            model: DataDiri,
-            attributes: [],
-            required: true,
-          }],
+          include: [
+            {
+              model: DataDiri,
+              attributes: [],
+              required: true,
+              as: "DataDiri",
+            },
+          ],
           where: {
             "$DataDiri.umur$": {
               [Op.and]: [{ [Op.gte]: range.min }, { [Op.lte]: range.max }],
@@ -148,14 +157,17 @@ const store = async (req, res, next) => {
       attributes: [
         [sequelize.fn("COUNT", sequelize.col("DataDiri.id")), "count"], // Menghitung jumlah dari DataDiri
       ],
-      include: [{
-        model: DataDiri,
-        attributes: ["asal"], // Mengambil kolom asal dari DataDiri
-        required: true,
-      }],
+      include: [
+        {
+          model: DataDiri,
+          attributes: ["asal"], // Mengambil kolom asal dari DataDiri
+          required: true,
+          as: "DataDiri",
+        },
+      ],
       group: ["DataDiri.asal"], // Mengelompokkan berdasarkan asal dari DataDiri
     });
-    
+
     const asalLabels = asalCounts.map((row) => row.asal);
     const asalData = asalCounts.map((row) => row.dataValues.count);
 
