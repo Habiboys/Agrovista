@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AgroWista - Monitoring</title>
     <link href="/css/tailwind.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <script
       src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
@@ -16,61 +20,260 @@
     <div class="flex h-screen">
       <!-- Sidebar -->
       <%- include('partials/sidebar') %>
-
       <!-- Main content -->
       <div class="flex-1 overflow-y-auto">
         <header class="bg-white shadow">
-          <div class="flex justify-between items-center px-4 py-3">
-            <h2 class="text-xl font-semibold">Monitoring</h2>
+          <div class="flex justify-between items-center px-6 py-4">
             <div class="flex items-center">
-              <input
-                type="text"
-                placeholder="Search"
-                class="px-3 py-1 border rounded-md mr-4"
-              />
-              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+              <i class="fas fa-chart-line text-green-600 text-xl mr-3"></i>
+              <h2 class="text-2xl font-semibold text-gray-800">
+                Monitoring Real-Time
+              </h2>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <i
+                  class="fas fa-search text-gray-400 absolute left-3 top-3"
+                ></i>
+                <input
+                  type="text"
+                  placeholder="Cari..."
+                  class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+              <div
+                class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-user"></i>
+              </div>
             </div>
           </div>
         </header>
 
         <main id="main-content" class="p-6">
-          <div>
-            <h1>Data Sensor Real-Time</h1>
-            <div id="sensorData">
-              <p>
-                <strong>Kelembapan Tanah:</strong>
-                <span id="soilMoisture">Loading...</span>%
-              </p>
-              <p>
-                <strong>Suhu:</strong>
-                <span id="temperature">Loading...</span>°C
-              </p>
-              <p>
-                <strong>Kelembapan:</strong>
-                <span id="humidity">Loading...</span>%
-              </p>
-              <p>
-                <strong>Status Hujan:</strong>
-                <span id="rainStatus">Loading...</span>
-              </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Kelembapan Tanah Card -->
+            <div
+              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Kelembapan Tanah</p>
+                  <div class="flex items-center">
+                    <span
+                      id="soilMoisture"
+                      class="text-3xl font-bold text-gray-800"
+                      >--</span
+                    >
+                    <span class="text-xl ml-1">%</span>
+                  </div>
+                  <p
+                    id="soilMoistureError"
+                    class="text-sm text-red-500 mt-2 hidden"
+                  >
+                    Response Terlalu Memakan Waktu, Periksa Alat
+                  </p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-water text-blue-500 text-xl"></i>
+                </div>
+              </div>
             </div>
 
-            <!-- Script to connect to Socket.IO and update sensor data -->
-            <script>
-              const socket = io();
+            <!-- Suhu Card -->
+            <div
+              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Suhu</p>
+                  <div class="flex items-center">
+                    <span
+                      id="temperature"
+                      class="text-3xl font-bold text-gray-800"
+                      >--</span
+                    >
+                    <span class="text-xl ml-1">°C</span>
+                  </div>
+                  <p
+                    id="temperatureError"
+                    class="text-sm text-red-500 mt-2 hidden"
+                  >
+                    Response Terlalu Memakan Waktu, Periksa Alat
+                  </p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-temperature-high text-red-500 text-xl"></i>
+                </div>
+              </div>
+            </div>
 
-              socket.on("sensorData", (data) => {
-                console.log("Data received from server:", data);
-                document.getElementById("soilMoisture").innerText =
-                  data.soilMoisture;
-                document.getElementById("temperature").innerText =
-                  data.temperature;
-                document.getElementById("humidity").innerText = data.humidity;
-                document.getElementById("rainStatus").innerText =
-                  data.rainStatus;
-              });
-            </script>
+            <!-- Kelembapan Udara Card -->
+            <div
+              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Kelembapan Udara</p>
+                  <div class="flex items-center">
+                    <span id="humidity" class="text-3xl font-bold text-gray-800"
+                      >--</span
+                    >
+                    <span class="text-xl ml-1">%</span>
+                  </div>
+                  <p
+                    id="humidityError"
+                    class="text-sm text-red-500 mt-2 hidden"
+                  >
+                    Response Terlalu Memakan Waktu, Periksa Alat
+                  </p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-cloud text-green-500 text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Deteksi Hujan Card -->
+            <div
+              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Status Hujan</p>
+                  <div class="flex items-center">
+                    <span
+                      id="rainStatus"
+                      class="text-3xl font-bold text-gray-800"
+                      >--</span
+                    >
+                  </div>
+                  <p
+                    id="rainStatusError"
+                    class="text-sm text-red-500 mt-2 hidden"
+                  >
+                    Response Terlalu Memakan Waktu, Periksa Alat
+                  </p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-cloud-rain text-purple-500 text-xl"></i>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Loading Overlay -->
+          <div
+            id="loadingOverlay"
+            class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center"
+            >
+              <div
+                class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"
+              ></div>
+              <p class="text-gray-700">Memuat data sensor...</p>
+            </div>
+          </div>
+
+          <script>
+            const socket = io();
+            const loadingOverlay = document.getElementById("loadingOverlay");
+            const TIMEOUT_DURATION = 10000; // 10 seconds timeout
+
+            // Show loading state initially
+            loadingOverlay.classList.remove("hidden");
+
+            // Initialize timeout handlers for each sensor
+            let dataTimeout = setTimeout(() => {
+              showTimeoutErrors();
+              loadingOverlay.classList.add("hidden");
+            }, TIMEOUT_DURATION);
+
+            function showTimeoutErrors() {
+              document
+                .getElementById("soilMoistureError")
+                .classList.remove("hidden");
+              document
+                .getElementById("temperatureError")
+                .classList.remove("hidden");
+              document
+                .getElementById("humidityError")
+                .classList.remove("hidden");
+              document
+                .getElementById("rainStatusError")
+                .classList.remove("hidden");
+            }
+
+            function hideTimeoutErrors() {
+              document
+                .getElementById("soilMoistureError")
+                .classList.add("hidden");
+              document
+                .getElementById("temperatureError")
+                .classList.add("hidden");
+              document.getElementById("humidityError").classList.add("hidden");
+              document
+                .getElementById("rainStatusError")
+                .classList.add("hidden");
+            }
+
+            socket.on("sensorData", (data) => {
+              console.log("Data received from server:", data);
+
+              // Clear timeout since we received data
+              clearTimeout(dataTimeout);
+
+              // Hide loading overlay and error messages
+              loadingOverlay.classList.add("hidden");
+              hideTimeoutErrors();
+
+              // Update the values with animation
+              updateValue("soilMoisture", data.soilMoisture);
+              updateValue("temperature", data.temperature);
+              updateValue("humidity", data.humidity);
+
+              // Update rain status
+              const rainStatus = data.isRaining ? "Hujan" : "Tidak Hujan";
+              updateValue("rainStatus", rainStatus);
+
+              // Reset timeout for next data update
+              dataTimeout = setTimeout(() => {
+                showTimeoutErrors();
+              }, TIMEOUT_DURATION);
+            });
+
+            function updateValue(elementId, newValue) {
+              const element = document.getElementById(elementId);
+              element.classList.add("transition-all", "duration-500");
+              element.textContent = newValue;
+            }
+
+            // Handle connection error
+            socket.on("connect_error", (error) => {
+              console.error("Connection error:", error);
+              clearTimeout(dataTimeout);
+              showTimeoutErrors();
+              loadingOverlay.innerHTML = `
+                <div class="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center">
+                  <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                  <p class="text-gray-700">Gagal terhubung ke server</p>
+                  <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Coba Lagi
+                  </button>
+                </div>
+              `;
+            });
+          </script>
         </main>
       </div>
     </div>

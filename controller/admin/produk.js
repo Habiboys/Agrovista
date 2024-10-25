@@ -1,4 +1,4 @@
-const { Produk } = require("../../models"); // Adjust the path according to your project structure
+const { Produk, User } = require("../../models"); // Adjust the path according to your project structure
 const QRCode = require("qrcode");
 const crypto = require("crypto");
 const path = require("path");
@@ -98,12 +98,7 @@ const simpan = async (req, res) => {
 
     console.log("QR Code:", qrBaru);
 
-    res.status(201).json({
-      message: "Produk berhasil ditambahkan",
-      produk: {
-        ...produk.toJSON(),
-      },
-    });
+    res.redirect("/admin/produk");
   } catch (error) {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
@@ -154,7 +149,7 @@ const update = async (req, res) => {
       where: { id },
     });
 
-    res.status(200).json({ message: "Produk berhasil diperbarui" });
+    res.redirect("/admin/produk");
   } catch (error) {
     console.error("Error: ", error.message);
     res.status(500).json({ message: "Terjadi kesalahan", error });
@@ -184,6 +179,9 @@ const hapus = async (req, res) => {
 const detail = async (req, res) => {
   try {
     const hashId = req.params.hashId;
+    const userId = req.session.userId;
+
+    const user = await User.findByPk(userId);
 
     // Cari produk berdasarkan hashId
     const produk = await Produk.findOne({ where: { hashId } });
@@ -193,7 +191,7 @@ const detail = async (req, res) => {
     }
 
     // Render halaman detail produk dengan data produk
-    res.render("detailproduk", { produk });
+    res.render("detailproduk", { produk, user });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });

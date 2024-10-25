@@ -3,17 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detail Produk</title>
+    <title>Detail Produk - <%= produk.nama %></title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
-  <body>
-    <h1>Detail Produk</h1>
+  <body class="bg-gray-50">
+    <%- include('partials/navbar') %>
 
-    <p>Nama: <%= produk.nama %></p>
-    <p>Kategori: <%= produk.kategori %></p>
-    <p>Deskripsi: <%= produk.deskripsi %></p>
-    <p>Status Halal: <%= produk.status_halal ? "Ya" : "Tidak" %></p>
-    <!-- Tampilkan informasi lain produk -->
+    <!-- Breadcrumb -->
+    <div class="container mx-auto px-4 py-8 mt-20">
+      <nav class="flex mb-8" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a href="/" class="text-gray-700 hover:text-green-600">
+              <i class="fas fa-home mr-2"></i>
+              Home
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+              <span class="text-green-600"><%= produk.nama %></span>
+            </div>
+          </li>
+        </ol>
+      </nav>
 
-    <a href="/">Kembali</a>
+      <!-- Product Detail Card -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="md:flex">
+          <!-- Product Images -->
+          <div class="md:w-1/2 h-full">
+            <div class="relative h-full">
+              <img
+                src="/1/<%= produk.gambar %>"
+                alt="<%= produk.nama %>"
+                class="w-full h-full object-cover"
+              />
+              <% if(produk.status_halal) { %>
+              <div
+                class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full flex items-center"
+              >
+                <i class="fas fa-check-circle mr-2"></i>
+                Halal
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Product Info -->
+          <div class="md:w-1/2 p-8">
+            <div class="flex items-center mb-4">
+              <span
+                class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+              >
+                <%= produk.kategori %>
+              </span>
+            </div>
+
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+              <%= produk.nama %>
+            </h1>
+
+            <div class="mb-6">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                Deskripsi
+              </h2>
+              <p class="text-gray-600 leading-relaxed">
+                <%= produk.deskripsi %>
+              </p>
+            </div>
+
+            <!-- Komposisi Section -->
+            <div class="mb-6">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                <i class="fas fa-leaf text-green-600 mr-2"></i>
+                Komposisi
+              </h2>
+              <p class="text-gray-600"><%= produk.komposisi %></p>
+            </div>
+
+            <!-- Sertifikasi Section -->
+            <% if (produk.sertifikasi_halal) { %>
+            <div class="mb-6">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                <i class="fas fa-certificate text-green-600 mr-2"></i>
+                Sertifikasi Halal
+              </h2>
+              <a
+                href="/1/<%= produk.sertifikasi_halal %>"
+                target="_blank"
+                class="text-green-600 hover:text-green-700"
+              >
+                Lihat Sertifikasi
+              </a>
+            </div>
+            <% } %>
+
+            <!-- Petunjuk Penyimpanan -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                Petunjuk Penyimpanan
+              </h2>
+              <ul class="text-gray-600 space-y-2">
+                <li>
+                  <i class="fas fa-check text-green-500 mr-2"></i>Simpan di
+                  tempat sejuk dan kering
+                </li>
+                <li>
+                  <i class="fas fa-check text-green-500 mr-2"></i>Hindari
+                  paparan sinar matahari langsung
+                </li>
+                <li>
+                  <i class="fas fa-check text-green-500 mr-2"></i>Tutup rapat
+                  setelah dibuka
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <div class="mt-8">
+        <a
+          href="/"
+          class="inline-flex items-center text-green-600 hover:text-green-700"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>
+          Kembali ke Home
+        </a>
+      </div>
+    </div>
+
+    <%- include('partials/footer') %>
   </body>
 </html>

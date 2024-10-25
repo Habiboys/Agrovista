@@ -15,15 +15,27 @@
       <!-- Main content -->
       <div class="flex-1 overflow-y-auto">
         <header class="bg-white shadow">
-          <div class="flex justify-between items-center px-4 py-3">
-            <h2 class="text-xl font-semibold">Daftar Produk</h2>
+          <div class="flex justify-between items-center px-6 py-4">
             <div class="flex items-center">
-              <input
-                type="text"
-                placeholder="Search"
-                class="px-3 py-1 border rounded-md mr-4"
-              />
-              <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+              <i class="fa-solid fa-box text-green-600 text-xl mr-3"></i>
+              <h2 class="text-2xl font-semibold text-gray-800">Produk</h2>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <i
+                  class="fas fa-search text-gray-400 absolute left-3 top-3"
+                ></i>
+                <input
+                  type="text"
+                  placeholder="Cari..."
+                  class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+              <div
+                class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-user"></i>
+              </div>
             </div>
           </div>
         </header>
@@ -159,7 +171,7 @@
           <script>
             function hapusProduk(id) {
               if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
-                fetch(`/delete-produk/${id}`, {
+                fetch(`/admin/delete-produk/${id}`, {
                   method: "DELETE",
                 })
                   .then((response) => response.json())
