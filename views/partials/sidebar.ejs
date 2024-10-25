@@ -1,0 +1,50 @@
+<div class="w-64 bg-green-700 text-white flex flex-col">
+  <div class="p-6">
+    <h1 class="text-2xl font-bold text-yellow-400 text-center">AgroWista</h1>
+  </div>
+  <nav class="flex-1 overflow-y-auto mt-6">
+    <a
+      href="dashboard"
+      class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4"
+    >
+      <iconify-icon icon="mdi:view-dashboard" class="text-xl"></iconify-icon>
+      <span>Dashboard</span>
+    </a>
+    <a
+      href="/admin/jenis-wisata"
+      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+    >
+      <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
+      <span>Jenis Wisata</span>
+    </a>
+    <a
+      href="produk"
+      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+    >
+      <iconify-icon icon="material-symbols:package-2-sharp"></iconify-icon>
+      <span>Produk</span>
+    </a>
+    <a
+      href="dataulasan"
+      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+    >
+      <iconify-icon icon="mdi:message-text" class="text-xl"></iconify-icon>
+      <span>Ulasan</span>
+    </a>
+    <a
+      href="monitoring"
+      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+    >
+      <iconify-icon icon="mdi:message-text" class="text-xl"></iconify-icon>
+      <span>Monitoring</span>
+    </a>
+  </nav>
+  <div class="px-4 hover:bg-red-600 w-full transition-colors duration-200">
+    <form action="/auth/logout" method="POST" class="flex items-center">
+      <button type="submit" class="flex items-center py-3 px-4 space-x-4">
+        <iconify-icon icon="mdi:logout" class="text-xl"></iconify-icon>
+        <span>Log Out</span>
+      </button>
+    </form>
+  </div>
+</div>
