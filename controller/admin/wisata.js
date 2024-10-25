@@ -1,4 +1,4 @@
-const { jenis_wisata } = require("../../models"); // Adjust the path according to your project structure
+const { JenisWisata } = require("../../models"); // Adjust the path according to your project structure
 const daftarWisata = async (req, res) => {
     try {
       const userId = req.session.userId;
@@ -7,7 +7,7 @@ const daftarWisata = async (req, res) => {
       const offset = (page - 1) * limit; // Calculate the offset
   
       const { rows: jeniswisata, count: totalItems } =
-        await jenis_wisata.findAndCountAll({
+        await JenisWisata.findAndCountAll({
           limit,
           offset,
         });
@@ -44,7 +44,7 @@ const daftarWisata = async (req, res) => {
       }
   
       // Simpan data wisata ke database
-      const wisata = await jenis_wisata.create({
+      const wisata = await JenisWisata.create({
         nama_wisata,
         deskripsi,
         gambar: gambar, // Simpan path gambar yang diunggah
@@ -60,7 +60,7 @@ const daftarWisata = async (req, res) => {
   const edit = async (req, res) => {
     try {
       const id = req.params.id;
-      const wisata = await jenis_wisata.findByPk(id);
+      const wisata = await JenisWisata.findByPk(id);
   
       if (!wisata) {
         return res.status(404).json({ message: "Wisata tidak ditemukan" });
@@ -81,7 +81,7 @@ const daftarWisata = async (req, res) => {
       const gambar = req.file ? req.file.filename : null; // Mendapatkan path gambar dari multer jika ada
 
       // Mendapatkan data wisata yang ada di database
-      const existingWisata = await jenis_wisata.findByPk(id);
+      const existingWisata = await JenisWisata.findByPk(id);
 
       if (!existingWisata) {
         return res.status(404).json({ message: "Wisata tidak ditemukan" });
@@ -94,7 +94,7 @@ const daftarWisata = async (req, res) => {
         gambar: gambar || existingWisata.gambar, // Jika gambar tidak diunggah, gunakan gambar yang sudah ada
       };
 
-      await jenis_wisata.update(updatedData, {
+      await JenisWisata.update(updatedData, {
         where: { id },
       });
 
@@ -109,7 +109,7 @@ const daftarWisata = async (req, res) => {
       const id = req.params.id;
   
       // Hapus data wisata dari database berdasarkan ID
-      const wisata = await jenis_wisata.findByPk(id);
+      const wisata = await JenisWisata.findByPk(id);
       if (!wisata) {
         return res
           .status(404)

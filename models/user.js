@@ -11,14 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.DataDiri, { foreignKey: 'id_user', onDelete: 'CASCADE' });
+
     }
   }
   User.init({
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    total_point: DataTypes.INTEGER,
+    role: {
+      type: DataTypes.ENUM,
+      values: ["admin", "user"],
+    },
   }, {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
+    timestamps: true,
   });
   return User;
 };
