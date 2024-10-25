@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Pengguna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/navbar') %>
+
+    <div class="max-w-4xl mx-auto mt-24 p-8">
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <!-- Header Section with Avatar -->
+        <div class="relative bg-gradient-to-r from-green-600 to-green-400 p-8">
+          <div class="absolute top-0 right-0 p-4">
+            <button
+              onclick="toggleEditForm()"
+              class="text-white hover:bg-white/20 rounded-lg px-4 py-2 transition-all flex items-center gap-2"
+            >
+              <i class="fas fa-edit"></i> Edit Profil
+            </button>
+          </div>
+          <div class="flex items-center gap-6">
+            <div
+              class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg"
+            >
+              <i class="fas fa-user text-4xl text-gray-400"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-white mb-2" id="name">
+                <%= user.DataDiri.nama %>
+              </h2>
+              <p class="text-green-100" id="occupation"><%= user.DataDiri.pekerjaan %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Points Card -->
+        <div class="px-8 py-6">
+          <div
+            class="bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-xl p-6 shadow-lg transform hover:scale-[1.02] transition-transform"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-yellow-800 text-sm font-semibold">
+                  Total Poin Anda
+                </p>
+                <h3
+                  class="text-4xl font-bold text-yellow-900"
+                  id="total_points"
+                >
+                <% if(!user.total_point){ %> 0
+                    <% } %>
+                 
+                </h3>
+              </div>
+              <div
+                class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-star text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Form Modal -->
+        <div
+          id="editFormModal"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center"
+        >
+          <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-bold text-gray-800">Edit Profil</h3>
+              <button
+                onclick="toggleEditForm()"
+                class="text-gray-500 hover:text-gray-700"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <form onsubmit="updateProfile(event)" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nama</label
+                >
+                <input
+                  type="text"
+                  id="editName"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Umur</label
+                >
+                <input
+                  type="number"
+                  id="editAge"
+                  min="0"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Jenis Kelamin</label
+                >
+                <select
+                  id="editGender"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                >
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pekerjaan</label
+                >
+                <input
+                  type="text"
+                  id="editOccupation"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Asal</label
+                >
+                <input
+                  type="text"
+                  id="editOrigin"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                />
+              </div>
+              <div class="flex gap-3 pt-4">
+                <button
+                  type="submit"
+                  class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Simpan
+                </button>
+                <button
+                  type="button"
+                  onclick="toggleEditForm()"
+                  class="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Batal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Personal Info -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">
+              Informasi Pribadi
+            </h3>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-calendar text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Umur</p>
+                  <p class="font-medium">
+                    <span id="age"><%= user.DataDiri.umur %></span> tahun
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-venus-mars text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Jenis Kelamin</p>
+                  <p class="font-medium" id="gender">
+                    <% if(user.DataDiri.jenis_kelamin =='L' ){ %> Laki-Laki <%
+                    }else{ %> Perempuan <% } %>
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-map-marker-alt text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Asal</p>
+                  <p class="font-medium" id="origin">
+                    <%= user.DataDiri.asal %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Info -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">
+              Informasi Akun
+            </h3>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-envelope text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Email</p>
+                  <p class="font-medium" id="email"><%= user.email %></p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-user-tag text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Role</p>
+                  <p class="font-medium capitalize" id="role">
+                    <%= user.role %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

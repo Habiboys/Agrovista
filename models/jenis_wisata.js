@@ -1,35 +1,38 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class jenis_wisata extends Model {
+  class JenisWisata extends Model {
     static associate(models) {
-      jenis_wisata.hasMany(models.DataUlasan, {
-        foreignKey: "jenisWisataId",
-        onDelete: "SET NULL",
-        onUpdate: "CASCADE",
-        as: "ulasans", // Optional: Alias for the association
-      });
+      // Relasi ke DataUlasan
+      JenisWisata.hasMany(models.DataUlasan, { foreignKey: 'jenisWisataId' });
     }
   }
-  jenis_wisata.init(
-    {
-      nama_wisata: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      gambar: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      deskripsi: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
+
+  JenisWisata.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {
-      sequelize,
-      modelName: "jenis_wisata",
-    }
-  );
-  return jenis_wisata;
+    nama_wisata: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    gambar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    deskripsi: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+  }, {
+    sequelize,
+    modelName: 'JenisWisata',
+    tableName: 'jenis_wisata',
+    timestamps: true,
+  });
+
+  return JenisWisata;
 };

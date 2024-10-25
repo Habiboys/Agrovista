@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { DataUlasan, jenis_wisata } = require("../../models"); // Adjust the path according to your project structure
+const { DataUlasan, JenisWisata } = require("../../models"); // Adjust the path according to your project structure
 const axios = require("axios");
 const Anthropic = require("@anthropic-ai/sdk");
 const anthropic = new Anthropic({
@@ -10,7 +10,7 @@ const analisisUlasan = async (req, res) => {
   try {
     await axios.get("http://localhost:5000/predict");
     const predictions = await DataUlasan.findAll();
-    const wisata = await jenis_wisata.findAll();
+    const wisata = await JenisWisata.findAll();
     const promptalt =
       "siapa presiden mesir pertama?, jawaban yg dikirimkan dalam datg html karna saya ingin menampilkannya dihalaman web usahakan pakai class css tailwind, Langsung saja berikan jawabban tanpa pengantar";
     const prompt = `
@@ -114,25 +114,28 @@ const analisisUlasan = async (req, res) => {
 
 const dataUlasan = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Get the page number from the query string
-    const limit = 10; // Number of items per page
-    const offset = (page - 1) * limit; // Calculate the offset
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
-    const { rows: dataUlasan, count: totalItems } =
-      await DataUlasan.findAndCountAll({
-        include: [
-          {
-            model: jenis_wisata, // Use the actual model reference here
-            as: "jenisWisata", // This should match the alias defined in your model association
-            attributes: ["nama_wisata"], // Specify the attributes you want to include
-          },
-        ],
-        limit,
-        offset,
-      });
+    // Hitung total item tanpa include
+    const totalItems = await DataUlasan.count();
+
+    // Ambil data dengan include
+    const dataUlasan = await DataUlasan.findAll({
+      include: [{
+        model: JenisWisata,
+        as: 'jenisWisata', // Gunakan alias di sini
+      }],
+      limit,
+      offset,
+    });
+    
+    console.log(dataUlasan);
+    console.log(dataUlasan.JenisWisata);
 
     const totalPages = Math.ceil(totalItems / limit);
-
+    
     res.render("dataulasan", {
       title: "Data Ulasan",
       dataUlasan,
@@ -141,8 +144,10 @@ const dataUlasan = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
+
 
 module.exports = {
   analisisUlasan,

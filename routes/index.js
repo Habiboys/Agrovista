@@ -7,9 +7,8 @@ var express = require("express");
 var router = express.Router();
 require("dotenv").config();
 const upload = require("../middleware/uploadFile");
-const { DataUlasan, jenis_wisata, Produk } = require("../models"); // Adjust the path according to your project structure
+const { DataUlasan, JenisWisata, Produk, User, DataDiri } = require("../models"); // Adjust the path according to your project structure
 const axios = require("axios");
-
 
 function isAuthenticated(req, res, next) {
   if (req.session.userId) {
@@ -20,9 +19,14 @@ function isAuthenticated(req, res, next) {
 }
 
 router.get("/", async (req, res) => {
+
+
+  const user= await User.findByPk(req.session.userId)
+
+
   const total_ulasan = await DataUlasan.count();
-  const total_wisata = await jenis_wisata.count();
-  const jenisWisata = await jenis_wisata.findAll({
+  const total_wisata = await JenisWisata.count();
+  const jenisWisata = await JenisWisata.findAll({
     limit: 4,
     order: [["createdAt", "DESC"]],
   });
@@ -38,6 +42,7 @@ router.get("/", async (req, res) => {
     total_produk,
     jenisWisata,
     dataUlasan,
+    user,
   });
 });
 
@@ -46,13 +51,40 @@ router.get("/ulasan", async function (req, res, next) {
   try {
     // Fetch all records from the DataUlasan table
     const ulasanData = await DataUlasan.findAll();
-    const jenisWisata = await jenis_wisata.findAll();
+    const jenisWisata = await JenisWisata.findAll();
+    const user= await User.findByPk(req.session.userId)
 
     // Log the results to the console
     console.log(ulasanData);
 
     // Render the 'ulasan' view and pass the data to it if needed
-    res.render("ulasan", { title: "Ulasan", data: ulasanData, jenisWisata });
+    res.render("ulasan", { title: "Ulasan", data: ulasanData, jenisWisata, user });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    next(error);
+  }
+});
+router.get("/profile", async function (req, res, next) {
+  try {
+    const user= await User.findByPk(req.session.userId,{
+      include: [
+        {
+          model: DataDiri,
+      
+        },
+    ]} )
+    console.log(user);
+
+    res.render("profile", { title: "profile", user});
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    next(error);
+  }
+});
+router.get("/profile/edit", async function (req, res, next) {
+  try {
+
+    res.render("editprofile", { title: "profile" });
   } catch (error) {
     console.error("Error fetching data:", error);
     next(error);

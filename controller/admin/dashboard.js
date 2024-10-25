@@ -1,7 +1,6 @@
 require("dotenv").config();
 const { sequelize } = require("../../models");
-const { DataUlasan, jenis_wisata } = require("../../models"); // Adjust the path according to your project structure
-const { where } = require("sequelize");
+const { DataUlasan, JenisWisata, DataDiri } = require("../../models");
 const { Op } = require("sequelize");
 const moment = require("moment");
 
@@ -13,23 +12,20 @@ const store = async (req, res, next) => {
       negatif: [],
     };
 
-    // Loop through each month of the year
     for (let month = 0; month < 12; month++) {
       const startOfMonth = moment().month(month).startOf("month").toDate();
       const endOfMonth = moment().month(month).endOf("month").toDate();
 
-      // Count total reviews for the current month
       const total_positif = await DataUlasan.count({
         where: {
           label: "Positif",
           createdAt: {
-            [Op.gte]: startOfMonth, // Start of the month
-            [Op.lt]: endOfMonth, // End of the month
+            [Op.gte]: startOfMonth,
+            [Op.lt]: endOfMonth,
           },
         },
       });
 
-      // Count negative reviews for the current month
       const total_negatif = await DataUlasan.count({
         where: {
           label: "Negatif",
@@ -40,7 +36,6 @@ const store = async (req, res, next) => {
         },
       });
 
-      // Count neutral reviews for the current month
       const total_netral = await DataUlasan.count({
         where: {
           label: "Netral",
@@ -51,41 +46,37 @@ const store = async (req, res, next) => {
         },
       });
 
-      // Push monthly counts into the monthlyData object
       monthlyData.positif.push(total_positif);
       monthlyData.netral.push(total_netral);
       monthlyData.negatif.push(total_negatif);
     }
 
-    // Count total reviews and total types of tourism
     const total_ulasan = await DataUlasan.count();
-    const total_wisata = await jenis_wisata.count();
+    const total_wisata = await JenisWisata.count();
 
     const reviewCounts = await DataUlasan.findAll({
       attributes: [
-        "jenisWisataId", // Use the foreign key to get the tourism type
-        [sequelize.fn("COUNT", sequelize.col("DataUlasan.id")), "count"], // Count of reviews
+        "jenisWisataId",
+        [sequelize.fn("COUNT", sequelize.col("DataUlasan.id")), "count"], // Ganti "DataUlasan.id" sesuai dengan alias yang benar
       ],
       group: "jenisWisataId",
       include: [
         {
-          model: jenis_wisata, // Use the imported model directly
-          attributes: ["id", "nama_wisata"], // Specify which attributes to include from jenis_wisata
-          as: "jenisWisata", // Use the alias defined in the association
+          model: JenisWisata,
+          attributes: ["id", "nama_wisata"],
+          as:'jenisWisata'
         },
       ],
     });
 
-    // Create labels and data arrays
-    const labels = reviewCounts.map((review) => review.jenisWisata.nama_wisata);
+    const labels = reviewCounts.map((review) => review.jenisWisata ? review.jenisWisata.nama_wisata : null).filter(Boolean);
     const data = reviewCounts.map((review) => review.dataValues.count);
 
-    const tourismTypes = await jenis_wisata.findAll({
-      attributes: ["id", "nama_wisata"], // Fetch the ID and name of tourism types
+    const tourismTypes = await JenisWisata.findAll({
+      attributes: ["id", "nama_wisata"],
     });
 
-    // Create an array to hold the labels and initialize chart data
-    const label = tourismTypes.map((type) => type.nama_wisata); // Extract names for labels
+    const label = tourismTypes.map((type) => type.nama_wisata);
     const chartData = {
       labels: labels,
       positif: Array(label.length).fill(0),
@@ -97,26 +88,25 @@ const store = async (req, res, next) => {
     for (const sentiment of sentiments) {
       const reviewCounts = await DataUlasan.findAll({
         attributes: [
-          "jenisWisataId", // Use the foreign key to get the tourism type
-          [sequelize.fn("COUNT", sequelize.col("DataUlasan.id")), "count"], // Count of reviews
+          "jenisWisataId",
+          [sequelize.fn("COUNT", sequelize.col("DataUlasan.id")), "count"], // Ganti "DataUlasan.id" sesuai dengan alias yang benar
         ],
         where: {
-          label: sentiment, // Filter by label
+          label: sentiment,
         },
         group: "jenisWisataId",
         include: [
           {
-            model: jenis_wisata,
+            model: JenisWisata,
             attributes: ["id", "nama_wisata"],
-            as: "jenisWisata",
+            as: 'jenisWisata'
           },
         ],
       });
 
       reviewCounts.forEach((review) => {
-        const index = label.indexOf(review.jenisWisata.nama_wisata); // Find index by name
+        const index = label.indexOf(review.JenisWisata ? review.jenisWisata.nama_wisata : null);
         if (index !== -1) {
-          // Ensure it exists
           if (sentiment === "Positif") {
             chartData.positif[index] = review.dataValues.count;
           } else if (sentiment === "Negatif") {
@@ -137,12 +127,16 @@ const store = async (req, res, next) => {
       { label: ">60", min: 61, max: 100 },
     ];
 
-    // Fetch counts for each age group
     const umurCounts = await Promise.all(
       umurRanges.map(async (range) => {
         return await DataUlasan.count({
+          include: [{
+            model: DataDiri,
+            attributes: [],
+            required: true,
+          }],
           where: {
-            umur: {
+            "$DataDiri.umur$": {
               [Op.and]: [{ [Op.gte]: range.min }, { [Op.lte]: range.max }],
             },
           },
@@ -152,35 +146,38 @@ const store = async (req, res, next) => {
 
     const asalCounts = await DataUlasan.findAll({
       attributes: [
-        "asal",
-        [sequelize.fn("COUNT", sequelize.col("id")), "count"],
+        [sequelize.fn("COUNT", sequelize.col("DataDiri.id")), "count"], // Menghitung jumlah dari DataDiri
       ],
-      group: "asal",
+      include: [{
+        model: DataDiri,
+        attributes: ["asal"], // Mengambil kolom asal dari DataDiri
+        required: true,
+      }],
+      group: ["DataDiri.asal"], // Mengelompokkan berdasarkan asal dari DataDiri
     });
+    
+    const asalLabels = asalCounts.map((row) => row.asal);
+    const asalData = asalCounts.map((row) => row.dataValues.count);
 
-    // Prepare the data for the chart
-    const asalLabels = asalCounts.map((row) => row.asal); // Extract asal names
-    const asalData = asalCounts.map((row) => row.dataValues.count); // Extract counts
-
-    // Render the dashboard with the collected data
     res.render("dashboard", {
       title: "Dashboard",
       total_ulasan,
       total_wisata,
-      total_positif: monthlyData.positif.reduce((a, b) => a + b, 0), // Total positive across all months
-      total_negatif: monthlyData.negatif.reduce((a, b) => a + b, 0), // Total negative across all months
-      total_netral: monthlyData.netral.reduce((a, b) => a + b, 0), // Total neutral across all months
+      total_positif: monthlyData.positif.reduce((a, b) => a + b, 0),
+      total_negatif: monthlyData.negatif.reduce((a, b) => a + b, 0),
+      total_netral: monthlyData.netral.reduce((a, b) => a + b, 0),
       monthlyData: JSON.stringify(monthlyData),
       reviewCounts: JSON.stringify({ labels, data }),
       chartData: JSON.stringify(chartData),
+      umurCounts: JSON.stringify(umurCounts),
+      asalLabels: JSON.stringify(asalLabels),
+      asalData: JSON.stringify(asalData),
       umurCounts: JSON.stringify(umurCounts), // Convert umurCounts to JSON
       umurLabels: JSON.stringify(umurRanges.map((range) => range.label)),
-      asalLabels: JSON.stringify(asalLabels), // Pass asal labels to the template
-      asalData: JSON.stringify(asalData),
     });
   } catch (error) {
     console.error("Error fetching data:", error);
-    next(error); // Pass the error to the next middleware for handling
+    next(error);
   }
 };
 
