@@ -49,6 +49,10 @@
                 <strong>Kelembapan:</strong>
                 <span id="humidity">Loading...</span>%
               </p>
+              <p>
+                <strong>Status Hujan:</strong>
+                <span id="rainStatus">Loading...</span>
+              </p>
             </div>
 
             <!-- Script to connect to Socket.IO and update sensor data -->
@@ -62,6 +66,8 @@
                 document.getElementById("temperature").innerText =
                   data.temperature;
                 document.getElementById("humidity").innerText = data.humidity;
+                document.getElementById("rainStatus").innerText =
+                  data.rainStatus;
               });
             </script>
           </div>
