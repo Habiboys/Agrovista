@@ -30,13 +30,19 @@ router.get("/", async (req, res) => {
   const total_ulasan = await DataUlasan.count();
   const total_wisata = await JenisWisata.count();
   const jenisWisata = await JenisWisata.findAll({
-    limit: 4,
+    limit: 3,
     order: [["createdAt", "DESC"]],
   });
   const total_produk = await Produk.count();
   const dataUlasan = await DataUlasan.findAll({
     limit: 3,
     order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: DataDiri,
+        as: "DataDiri",
+      },
+    ],
   });
   res.render("index", {
     title: "AgroWista",

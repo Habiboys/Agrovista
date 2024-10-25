@@ -51,120 +51,143 @@
         </header>
 
         <main id="main-content" class="p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Kelembapan Tanah Card -->
             <div
-              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+              class="bg-white rounded-xl shadow-sm p-8 relative overflow-hidden"
             >
-              <div class="flex justify-between items-start mb-4">
+              <div class="flex justify-between items-start">
                 <div>
-                  <p class="text-sm text-gray-500 mb-1">Kelembapan Tanah</p>
+                  <p class="text-lg text-gray-500 mb-2">Kelembapan Tanah</p>
                   <div class="flex items-center">
                     <span
                       id="soilMoisture"
-                      class="text-3xl font-bold text-gray-800"
+                      class="text-2xl font-bold text-gray-800"
                       >--</span
                     >
-                    <span class="text-xl ml-1">%</span>
+                    <span class="text-2xl ml-2">%</span>
                   </div>
                   <p
                     id="soilMoistureError"
-                    class="text-sm text-red-500 mt-2 hidden"
+                    class="text-sm text-red-500 mt-3 hidden"
                   >
-                    Response Terlalu Memakan Waktu, Periksa Alat
+                    Response Terlalu Memakan Waktu, Segera Periksa Alat
+                  </p>
+                  <p class="text-sm text-gray-600 mt-2">
+                    Kelembapan tanah yang optimal penting untuk pertumbuhan
+                    tanaman. Terlalu sedikit kelembapan dapat menyebabkan stres
+                    pada tanaman, sementara terlalu banyak dapat menyebabkan
+                    akar membusuk.
                   </p>
                 </div>
                 <div
-                  class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
+                  class="w-16 h-10 p-2 bg-blue-100 rounded-xl flex items-center justify-center"
                 >
-                  <i class="fas fa-water text-blue-500 text-xl"></i>
+                  <i class="fas fa-water text-blue-500 text-2xl"></i>
                 </div>
               </div>
             </div>
 
             <!-- Suhu Card -->
             <div
-              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+              class="bg-white rounded-xl shadow-sm p-8 relative overflow-hidden"
             >
-              <div class="flex justify-between items-start mb-4">
+              <div class="flex justify-between items-start">
                 <div>
-                  <p class="text-sm text-gray-500 mb-1">Suhu</p>
+                  <p class="text-lg text-gray-500 mb-2">Suhu</p>
                   <div class="flex items-center">
                     <span
                       id="temperature"
-                      class="text-3xl font-bold text-gray-800"
+                      class="text-2xl font-bold text-gray-800"
                       >--</span
                     >
-                    <span class="text-xl ml-1">°C</span>
+                    <span class="text-2xl ml-2">°C</span>
                   </div>
                   <p
                     id="temperatureError"
-                    class="text-sm text-red-500 mt-2 hidden"
+                    class="text-sm text-red-500 mt-3 hidden"
                   >
-                    Response Terlalu Memakan Waktu, Periksa Alat
+                    Response Terlalu Memakan Waktu, Segera Periksa Alat
+                  </p>
+                  <p class="text-sm text-gray-600 mt-2">
+                    Suhu yang tepat sangat mempengaruhi pertumbuhan tanaman dan
+                    produktivitas. Suhu ekstrem dapat mengganggu proses
+                    fotosintesis dan mengurangi hasil panen.
                   </p>
                 </div>
                 <div
-                  class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center"
+                  class="w-16 h-10 p-2 bg-red-100 rounded-xl flex items-center justify-center"
                 >
-                  <i class="fas fa-temperature-high text-red-500 text-xl"></i>
+                  <i class="fas fa-temperature-high text-red-500 text-2xl"></i>
                 </div>
               </div>
             </div>
 
             <!-- Kelembapan Udara Card -->
             <div
-              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+              class="bg-white rounded-xl shadow-sm p-8 relative overflow-hidden"
             >
-              <div class="flex justify-between items-start mb-4">
+              <div class="flex justify-between items-start">
                 <div>
-                  <p class="text-sm text-gray-500 mb-1">Kelembapan Udara</p>
+                  <p class="text-lg text-gray-500 mb-2">Kelembapan Udara</p>
                   <div class="flex items-center">
-                    <span id="humidity" class="text-3xl font-bold text-gray-800"
+                    <span id="humidity" class="text-2xl font-bold text-gray-800"
                       >--</span
                     >
-                    <span class="text-xl ml-1">%</span>
+                    <span class="text-2xl ml-2">%</span>
                   </div>
                   <p
                     id="humidityError"
-                    class="text-sm text-red-500 mt-2 hidden"
+                    class="text-sm text-red-500 mt-3 hidden"
                   >
-                    Response Terlalu Memakan Waktu, Periksa Alat
+                    Response Terlalu Memakan Waktu, Segera Periksa Alat
+                  </p>
+                  <p class="text-sm text-gray-600 mt-2">
+                    Kelembapan udara berpengaruh pada kesehatan tanaman dan
+                    serangan hama. Kelembapan yang terlalu rendah dapat
+                    menyebabkan tanaman layu, sedangkan kelembapan yang terlalu
+                    tinggi dapat meningkatkan risiko penyakit.
                   </p>
                 </div>
                 <div
-                  class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+                  class="w-16 h-10 p-2 bg-green-100 rounded-xl flex items-center justify-center"
                 >
-                  <i class="fas fa-cloud text-green-500 text-xl"></i>
+                  <i class="fas fa-cloud text-green-500 text-2xl"></i>
                 </div>
               </div>
             </div>
 
             <!-- Deteksi Hujan Card -->
             <div
-              class="bg-white rounded-xl shadow-sm p-6 relative overflow-hidden"
+              class="bg-white rounded-xl shadow-sm p-8 relative overflow-hidden"
             >
-              <div class="flex justify-between items-start mb-4">
+              <div class="flex justify-between items-start">
                 <div>
-                  <p class="text-sm text-gray-500 mb-1">Status Hujan</p>
+                  <p class="text-lg text-gray-500 mb-2">Status Hujan</p>
                   <div class="flex items-center">
                     <span
                       id="rainStatus"
-                      class="text-3xl font-bold text-gray-800"
+                      class="text-2xl font-bold text-gray-800"
                       >--</span
                     >
                   </div>
                   <p
                     id="rainStatusError"
-                    class="text-sm text-red-500 mt-2 hidden"
+                    class="text-sm text-red-500 mt-3 hidden"
                   >
-                    Response Terlalu Memakan Waktu, Periksa Alat
+                    Response Terlalu Memakan Waktu, Segera Periksa Alat
+                  </p>
+                  <p class="text-sm text-gray-600 mt-2">
+                    Memantau status hujan sangat penting untuk perencanaan
+                    kegiatan agroturisme. Hujan yang tepat waktu dapat
+                    meningkatkan hasil panen, tetapi curah hujan yang berlebihan
+                    dapat menyebabkan kerusakan.
                   </p>
                 </div>
                 <div
-                  class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"
+                  class="w-16 h-10 p-2 bg-purple-100 rounded-xl flex items-center justify-center"
                 >
-                  <i class="fas fa-cloud-rain text-purple-500 text-xl"></i>
+                  <i class="fas fa-cloud-rain text-purple-500 text-2xl"></i>
                 </div>
               </div>
             </div>
