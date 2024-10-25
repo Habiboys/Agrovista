@@ -161,6 +161,11 @@
                   >
                     Aksi
                   </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Point
+                  </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -174,16 +179,82 @@
                   </td>
                   <td class="px-6 py-4"><%= dataUlasan.ulasan %></td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <% if (!dataUlasan.point) { %>
                     <button
                       class="bg-yellow-500 text-white px-3 py-1 rounded-md"
+                      onclick="openModal('<%= dataUlasan.id %>', '<%= dataUlasan.jenisWisata.nama_wisata %>', '<%= dataUlasan.ulasan %>')"
                     >
                       Detail
                     </button>
+                    <% } else { %>
+                    <!-- Jika sudah ada point, tampilkan pesan atau kosong -->
+                    <span class="text-gray-500">Poin sudah diberikan</span>
+                    <% } %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% if (dataUlasan.point) { %> <%= dataUlasan.point %> <% }
+                    else { %>
+                    <span class="text-gray-500">Belum diberikan</span>
+                    <% } %>
                   </td>
                 </tr>
                 <% }) %>
               </tbody>
             </table>
+          </div>
+
+          <!-- Modal -->
+          <div
+            id="detailModal"
+            class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50"
+          >
+            <div class="bg-white rounded-lg shadow-lg w-1/2 p-6 relative">
+              <!-- Tambahkan relative -->
+              <!-- Tombol penutup -->
+              <span
+                class="absolute top-2 right-2 cursor-pointer text-gray-600 hover:text-gray-800"
+                onclick="closeDetailModal()"
+                >&times;</span
+              >
+              <h2 class="text-xl font-bold mb-4">Detail Ulasan</h2>
+              <div class="mb-4">
+                <label class="block font-medium text-gray-700"
+                  >Jenis Wisata:</label
+                >
+                <p id="modalJenisWisata" class="text-gray-600"></p>
+              </div>
+              <div class="mb-4">
+                <label class="block font-medium text-gray-700">Ulasan:</label>
+                <p id="modalUlasan" class="text-gray-600"></p>
+              </div>
+              <div class="mb-4">
+                <label class="block font-medium text-gray-700">Poin:</label>
+                <% if (!dataUlasan.point) { %>
+                <form action="/admin/simpan-point" method="post">
+                  <input type="hidden" name="ulasanId" id="modalUlasanId" />
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    id="modalPoin"
+                    name="point"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-2 px-4"
+                    placeholder="Masukkan poin"
+                  />
+                  <div class="flex justify-end mt-2">
+                    <button
+                      type="submit"
+                      class="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </form>
+                <% } else { %>
+                <p class="text-gray-600"><%= dataUlasan.point %></p>
+                <!-- Menampilkan poin jika sudah ada -->
+                <% } %>
+              </div>
+            </div>
           </div>
 
           <!-- Pagination -->
@@ -303,5 +374,19 @@
         </main>
       </div>
     </div>
+    <script>
+      // Function to open the modal and populate data
+      function openModal(ulasanId, jenisWisata, ulasan) {
+        document.getElementById("modalUlasanId").value = ulasanId;
+        document.getElementById("modalJenisWisata").textContent = jenisWisata;
+        document.getElementById("modalUlasan").textContent = ulasan;
+        document.getElementById("modalPoin").value = ""; // reset the point input
+        document.getElementById("detailModal").classList.remove("hidden");
+      }
+
+      function closeDetailModal() {
+        document.getElementById("detailModal").classList.add("hidden");
+      }
+    </script>
   </body>
 </html>

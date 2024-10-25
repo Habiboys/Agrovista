@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { DataUlasan, JenisWisata } = require("../../models"); // Adjust the path according to your project structure
+const { DataUlasan, JenisWisata, User } = require("../../models"); // Adjust the path according to your project structure
 const axios = require("axios");
 const Anthropic = require("@anthropic-ai/sdk");
 const anthropic = new Anthropic({
@@ -123,19 +123,20 @@ const dataUlasan = async (req, res) => {
 
     // Ambil data dengan include
     const dataUlasan = await DataUlasan.findAll({
-      include: [{
-        model: JenisWisata,
-        as: 'jenisWisata', // Gunakan alias di sini
-      }],
+      include: [
+        {
+          model: JenisWisata,
+          as: "jenisWisata", // Gunakan alias di sini
+        },
+      ],
       limit,
       offset,
     });
-    
-    console.log(dataUlasan);
-    console.log(dataUlasan.JenisWisata);
+
+    console.log(dataUlasan.point);
 
     const totalPages = Math.ceil(totalItems / limit);
-    
+
     res.render("dataulasan", {
       title: "Data Ulasan",
       dataUlasan,
@@ -148,8 +149,56 @@ const dataUlasan = async (req, res) => {
   }
 };
 
+// Endpoint untuk menyimpan poin
+const simpanPoint = async (req, res) => {
+  try {
+    const { ulasanId, point } = req.body; // Mengambil ulasanId dari body
+
+    // Konversi point ke number
+    const numericPoint = Number(point);
+
+    console.log("Ulasan ID: ", ulasanId); // Log untuk memverifikasi
+    console.log("Point: ", numericPoint);
+
+    // Validasi input
+    if (!ulasanId || isNaN(numericPoint)) {
+      return res
+        .status(400)
+        .json({ message: "ID ulasan dan poin harus diisi!" });
+    }
+
+    // Update data ulasan dengan poin
+    const dataUlasan = await DataUlasan.findOne({ where: { id: ulasanId } });
+    if (!dataUlasan) {
+      return res.status(404).json({ message: "Ulasan tidak ditemukan" });
+    }
+
+    // Simpan poin ke dalam ulasan
+    await DataUlasan.update(
+      { point: numericPoint },
+      { where: { id: ulasanId } }
+    );
+
+    // Update total poin pengguna
+    const userId = dataUlasan.id_data_diri; // Sesuaikan dengan relasi yang Anda miliki
+    const user = await User.findOne({ where: { id: userId } });
+    if (user) {
+      const newTotalPoint = user.total_point + numericPoint;
+      await User.update(
+        { total_point: newTotalPoint },
+        { where: { id: userId } }
+      );
+    }
+
+    res.redirect("/admin/dataulasan");
+  } catch (error) {
+    console.error("Error: ", error.message);
+    res.status(500).json({ message: "Terjadi Kesalahan", error });
+  }
+};
 
 module.exports = {
   analisisUlasan,
   dataUlasan,
+  simpanPoint,
 };

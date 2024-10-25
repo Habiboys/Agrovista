@@ -38,28 +38,24 @@ function startScanning() {
       }
 
       // Mulai membaca barcode dari video
-      codeReader.decodeFromVideoDevice(
-        null,
-        videoElement,
-        (result, err) => {
-          if (result) {
-            const scannedResult = result.text;
-            // resultDiv.textContent = `Kode yang terdeteksi: ${scannedResult}`;
+      codeReader.decodeFromVideoDevice(null, videoElement, (result, err) => {
+        if (result) {
+          const scannedResult = result.text;
+          resultDiv.textContent = `Kode yang terdeteksi: ${scannedResult}`;
 
-            // Jika hasilnya valid URL, buka di tab baru
-            if (isValidURL(scannedResult)) {
-              window.open(scannedResult, "_blank");
-            } else {
-              resultDiv.textContent = `Hasil tidak valid sebagai URL: ${scannedResult}`;
-            }
-            stopScanning(); // Hentikan scanning setelah mendapatkan hasil
+          // Jika hasilnya valid URL, buka di tab baru
+          if (isValidURL(scannedResult)) {
+            window.open(scannedResult, "_blank");
+          } else {
+            resultDiv.textContent = `Hasil tidak valid sebagai URL: ${scannedResult}`;
           }
-
-          if (err && !(err instanceof ZXing.NotFoundException)) {
-            console.error("Error:", err);
-          }
+          stopScanning(); // Hentikan scanning setelah mendapatkan hasil
         }
-      );
+
+        if (err && !(err instanceof ZXing.NotFoundException)) {
+          console.error("Error:", err);
+        }
+      });
     })
     .catch(function (err) {
       console.error("Error accessing the camera", err);

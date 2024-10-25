@@ -7,7 +7,13 @@ var express = require("express");
 var router = express.Router();
 require("dotenv").config();
 const upload = require("../middleware/uploadFile");
-const { DataUlasan, JenisWisata, Produk, User, DataDiri } = require("../models"); // Adjust the path according to your project structure
+const {
+  DataUlasan,
+  JenisWisata,
+  Produk,
+  User,
+  DataDiri,
+} = require("../models"); // Adjust the path according to your project structure
 const axios = require("axios");
 
 function isAuthenticated(req, res, next) {
@@ -19,10 +25,7 @@ function isAuthenticated(req, res, next) {
 }
 
 router.get("/", async (req, res) => {
-
-
-  const user= await User.findByPk(req.session.userId)
-
+  const user = await User.findByPk(req.session.userId);
 
   const total_ulasan = await DataUlasan.count();
   const total_wisata = await JenisWisata.count();
@@ -52,13 +55,21 @@ router.get("/ulasan", async function (req, res, next) {
     // Fetch all records from the DataUlasan table
     const ulasanData = await DataUlasan.findAll();
     const jenisWisata = await JenisWisata.findAll();
-    const user= await User.findByPk(req.session.userId)
-
-    // Log the results to the console
-    console.log(ulasanData);
+    const user = await User.findByPk(req.session.userId, {
+      include: [
+        {
+          model: DataDiri,
+        },
+      ],
+    });
 
     // Render the 'ulasan' view and pass the data to it if needed
-    res.render("ulasan", { title: "Ulasan", data: ulasanData, jenisWisata, user });
+    res.render("ulasan", {
+      title: "Ulasan",
+      data: ulasanData,
+      jenisWisata,
+      user,
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
     next(error);
@@ -66,16 +77,16 @@ router.get("/ulasan", async function (req, res, next) {
 });
 router.get("/profile", async function (req, res, next) {
   try {
-    const user= await User.findByPk(req.session.userId,{
+    const user = await User.findByPk(req.session.userId, {
       include: [
         {
           model: DataDiri,
-      
         },
-    ]} )
+      ],
+    });
     console.log(user);
 
-    res.render("profile", { title: "profile", user});
+    res.render("profile", { title: "profile", user });
   } catch (error) {
     console.error("Error fetching data:", error);
     next(error);
@@ -83,7 +94,6 @@ router.get("/profile", async function (req, res, next) {
 });
 router.get("/profile/edit", async function (req, res, next) {
   try {
-
     res.render("editprofile", { title: "profile" });
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -93,43 +103,47 @@ router.get("/profile/edit", async function (req, res, next) {
 
 router.post("/kirim-ulasan", async (req, res) => {
   try {
-    const { nama, jenis_kelamin, umur, asal, pekerjaan, jenis_wisata, ulasan } =
-      req.body;
+    const { jenis_wisata, ulasan } = req.body;
 
-    // Log the received body for debugging
-    console.log("Received body:", req.body);
-
-    // Validate the received data (optional)
-    if (
-      !jenis_kelamin ||
-      !umur ||
-      !asal ||
-      !pekerjaan ||
-      !jenis_wisata ||
-      !ulasan
-    ) {
+    // Validasi field `jenis_wisata` dan `ulasan`
+    if (!jenis_wisata || !ulasan) {
       return res.status(400).json({ message: "Semua field harus diisi!" });
     }
 
-    // Create the data in the database
+    let id_data_diri = null;
+
+    // Jika `userId` tersedia, cari data diri terkait
+    if (req.session.userId) {
+      const dataDiri = await DataDiri.findOne({
+        where: { id_user: req.session.userId },
+      });
+      if (!dataDiri) {
+        await DataUlasan.create({
+          id_data_diri: null,
+          jenisWisataId: jenis_wisata,
+          ulasan,
+        });
+      }
+      id_data_diri = dataDiri.id;
+    }
+
+    // Simpan ulasan di database
     const data = await DataUlasan.create({
-      nama,
-      jenis_kelamin,
-      umur,
-      asal,
-      pekerjaan,
+      id_data_diri: id_data_diri,
       jenisWisataId: jenis_wisata,
       ulasan,
     });
 
-    await axios.get("http://localhost:5000/predict");
+    // Panggilan API eksternal jika diperlukan
+    // await axios.get("http://localhost:5000/predict");
     console.log("Data saved:", data);
     res.status(201).json({ message: "Ulasan berhasil dikirim", data });
   } catch (error) {
-    console.error("Error: ", error.message);
+    console.error("Error:", error.message);
     res.status(500).json({ message: "Terjadi Kesalahan", error });
   }
 });
+
 router.post("/chat", async (req, res) => {
   try {
     const response = await axios.post(
@@ -145,30 +159,51 @@ router.post("/chat", async (req, res) => {
   }
 });
 
-router.get("/admin/dataulasan/analisis",isAuthenticated, ulasan.analisisUlasan);
+router.get(
+  "/admin/dataulasan/analisis",
+  isAuthenticated,
+  ulasan.analisisUlasan
+);
 router.get("/admin/dataulasan", isAuthenticated, ulasan.dataUlasan);
 router.get("/admin/dashboard", isAuthenticated, dashboard.store);
+router.post("/admin/simpan-point", isAuthenticated, ulasan.simpanPoint);
 
 // JENIS WISATA==========================================================
 router.get("/admin/jenis-wisata", isAuthenticated, wisata.daftarWisata);
-router.get("/admin/jenis-wisata/add-wisata", isAuthenticated, async (req, res) => { res.render("addwisata", { title: "Tambah Wisata" });});
-router.post("/admin/jenis-wisata/tambah-wisata", upload.single("gambar"), wisata.simpan);
-router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated, );
-router.post( "/admin/jenis-wisata/edit-wisata/:id",upload.single("gambar"),wisata.update);
-router.delete("/admin/jenis-wisata/delete-wisata/:id", wisata.hapus );
+router.get(
+  "/admin/jenis-wisata/add-wisata",
+  isAuthenticated,
+  async (req, res) => {
+    res.render("addwisata", { title: "Tambah Wisata" });
+  }
+);
+router.post(
+  "/admin/jenis-wisata/tambah-wisata",
+  upload.single("gambar"),
+  wisata.simpan
+);
+router.get("/admin/jenis-wisata/edit-wisata/:id", isAuthenticated);
+router.post(
+  "/admin/jenis-wisata/edit-wisata/:id",
+  upload.single("gambar"),
+  wisata.update
+);
+router.delete("/admin/jenis-wisata/delete-wisata/:id", wisata.hapus);
 
 // PRODUK=======================================================
 router.get("/admin/produk", isAuthenticated, produk.listProduk);
 router.get("/admin/add-produk", isAuthenticated, produk.tambah);
-router.post("/admin/tambah-produk",isAuthenticated,
-upload.fields([
+router.post(
+  "/admin/tambah-produk",
+  isAuthenticated,
+  upload.fields([
     { name: "gambar", maxCount: 1 },
     { name: "sertifikasi_halal", maxCount: 1 },
   ]),
   produk.simpan
 );
 router.get("/admin/edit-produk/:id", isAuthenticated, produk.edit);
-router.post( "/admin/edit-produk/:id",upload.single("gambar"), produk.update);
+router.post("/admin/edit-produk/:id", upload.single("gambar"), produk.update);
 router.delete("/admin/delete-produk/:id", isAuthenticated, produk.hapus);
 router.get("/detail-produk/:hashId", isAuthenticated, produk.detail);
 
