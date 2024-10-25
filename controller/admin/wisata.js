@@ -105,6 +105,7 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Terjadi kesalahan", error });
   }
 };
+
 const hapus = async (req, res) => {
   try {
     const id = req.params.id;
@@ -133,3 +134,4 @@ module.exports = {
   update,
   hapus,
 };
+

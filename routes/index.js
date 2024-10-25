@@ -2,6 +2,7 @@ const ulasan = require("../controller/admin/ulasan");
 const dashboard = require("../controller/admin/dashboard");
 const produk = require("../controller/admin/produk");
 const wisata = require("../controller/admin/wisata");
+const monitoring = require("../controller/admin/monitoring");
 
 var express = require("express");
 var router = express.Router();
@@ -26,7 +27,6 @@ function isAuthenticated(req, res, next) {
 
 router.get("/", async (req, res) => {
   const user = await User.findByPk(req.session.userId);
-
   const total_ulasan = await DataUlasan.count();
   const total_wisata = await JenisWisata.count();
   const jenisWisata = await JenisWisata.findAll({
@@ -164,6 +164,7 @@ router.get(
   isAuthenticated,
   ulasan.analisisUlasan
 );
+router.get("/admin/dataulasan/analisis", isAuthenticated, ulasan.analisisUlasan);
 router.get("/admin/dataulasan", isAuthenticated, ulasan.dataUlasan);
 router.get("/admin/dashboard", isAuthenticated, dashboard.store);
 router.post("/admin/simpan-point", isAuthenticated, ulasan.simpanPoint);
@@ -206,5 +207,11 @@ router.get("/admin/edit-produk/:id", isAuthenticated, produk.edit);
 router.post("/admin/edit-produk/:id", upload.single("gambar"), produk.update);
 router.delete("/admin/delete-produk/:id", isAuthenticated, produk.hapus);
 router.get("/detail-produk/:hashId", isAuthenticated, produk.detail);
+
+
+//MONITORING
+router.get("/admin/monitoring", isAuthenticated, monitoring.view);
+router.post('/admin/getdatamonitoring', monitoring.receiveData);
+
 
 module.exports = router;
