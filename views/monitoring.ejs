@@ -264,10 +264,11 @@
               updateValue("soilMoisture", data.soilMoisture);
               updateValue("temperature", data.temperature);
               updateValue("humidity", data.humidity);
+              updateValue("rainStatus", data.rainStatus);
 
               // Update rain status
-              const rainStatus = data.isRaining ? "Hujan" : "Tidak Hujan";
-              updateValue("rainStatus", rainStatus);
+              // const rainStatus = data.isRaining ? "Hujan" : "Tidak Hujan";
+              // updateValue("rainStatus", rainStatus);
 
               // Reset timeout for next data update
               dataTimeout = setTimeout(() => {

@@ -22,6 +22,7 @@ const listProduk = async (req, res) => {
       userId,
       currentPage: page,
       totalPages,
+      title: "Data Produk",
     });
   } catch (error) {
     console.error("Error fetching data:", error);

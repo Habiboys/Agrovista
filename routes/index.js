@@ -81,8 +81,31 @@ router.get("/ulasan", async function (req, res, next) {
     next(error);
   }
 });
+
+async function updateTotalPoints() {
+  // Find all users and update their total points
+  const users = await User.findAll();
+
+  for (let user of users) {
+    // Sum points for all reviews related to the user via data_diri
+    const totalPoints = await DataUlasan.sum('point', {
+      include: [{
+        model: DataDiri,
+        as: 'DataDiri',
+        where: { id_user: user.id },
+      }],
+    });
+
+    // Update the user's total_point with the calculated sum
+    console.log(`Updating total points for user ${user.id} to ${totalPoints || 0}`);
+    await user.update({ total_point: totalPoints || 0 });
+  }
+}
+
+
 router.get("/profile", async function (req, res, next) {
   try {
+    await updateTotalPoints();
     const user = await User.findByPk(req.session.userId, {
       include: [
         {
@@ -214,7 +237,7 @@ router.post(
 router.get("/admin/edit-produk/:id", isAuthenticated, produk.edit);
 router.post("/admin/edit-produk/:id", upload.single("gambar"), produk.update);
 router.delete("/admin/delete-produk/:id", isAuthenticated, produk.hapus);
-router.get("/detail-produk/:hashId", isAuthenticated, produk.detail);
+router.get("/detail-produk/:hashId", produk.detail);
 
 //MONITORING
 router.get("/admin/monitoring", isAuthenticated, monitoring.view);

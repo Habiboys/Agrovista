@@ -1,11 +1,13 @@
 require("dotenv").config();
 const { sequelize } = require("../../models");
-const { DataUlasan, JenisWisata, DataDiri } = require("../../models");
+const { DataUlasan, JenisWisata, DataDiri, Produk } = require("../../models");
 const { Op } = require("sequelize");
 const moment = require("moment");
 
 const store = async (req, res, next) => {
   try {
+    const totalProduk = await Produk.count();
+
     const monthlyData = {
       positif: [],
       netral: [],
@@ -167,9 +169,13 @@ const store = async (req, res, next) => {
       ],
       group: ["DataDiri.asal"], // Mengelompokkan berdasarkan asal dari DataDiri
     });
-
-    const asalLabels = asalCounts.map((row) => row.asal);
+    
+    // Mengakses atribut dengan benar
+    const asalLabels = asalCounts.map((row) => row.DataDiri.asal);
     const asalData = asalCounts.map((row) => row.dataValues.count);
+    
+    console.log("Jadi isinya:", asalLabels, asalData);
+    
 
     res.render("dashboard", {
       title: "Dashboard",
@@ -186,6 +192,7 @@ const store = async (req, res, next) => {
       asalData: JSON.stringify(asalData),
       umurCounts: JSON.stringify(umurCounts), // Convert umurCounts to JSON
       umurLabels: JSON.stringify(umurRanges.map((range) => range.label)),
+      totalProduk,
     });
   } catch (error) {
     console.error("Error fetching data:", error);

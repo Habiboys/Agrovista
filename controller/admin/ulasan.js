@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { DataUlasan, JenisWisata, User, DataDiri } = require("../../models"); // Adjust the path according to your project structure
 const axios = require("axios");
+
 const Anthropic = require("@anthropic-ai/sdk");
 const { where } = require("sequelize");
 const anthropic = new Anthropic({
@@ -115,6 +116,8 @@ const analisisUlasan = async (req, res) => {
 
 const dataUlasan = async (req, res) => {
   try {
+    // const axios = require("axios");
+    await axios.get("http://localhost:5000/predict");
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;

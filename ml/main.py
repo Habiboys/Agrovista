@@ -37,7 +37,7 @@ def connect_to_database():
             host='localhost', 
             user='root',     
             password='',     
-            database='ulasan' 
+            database='newulasan' 
         )
         return connection
     except mysql.connector.Error as err:
@@ -53,11 +53,15 @@ def load_text_file(file_path):
 def generate_response(user_prompt, document_content):
     """Generate response using Google Gemini AI based on prompt and document content."""
     model = genai.GenerativeModel('gemini-1.5-flash-latest')
+    # Gabungkan konten dokumen dengan prompt
     full_prompt = (
-        f"Anggap Anda adalah seorang sales desa lewuimalang yang ramah, berdasarkan dokumen ini:\n"
+        f"Anggap Anda adalah seorang sales desa lewuimalang yang ramah, berikan jawaban yang baik, "
+        f"pastikan semua jawaban Anda berdasarkan dokumen ini:\n"
         f"Dokumen: {document_content}\n"
-        f"Pertanyaan: {user_prompt}.\n\n"
-        f"Respon:"
+        f"Pertahankan nada yang ramah dan komunikatif dan selalu jawab dalam bahasa Indonesia dan tanpa atribut markdown,tanpa (*, #, dll). kalah ada list beri saja angka"
+        f"Jika bagian tersebut tidak relevan, jangan ragu untuk mengabaikannya.\n\n "
+        # f"Pastikan pembicaraan berlanjut, cek memori percakapan pastikan terus berlanjut dan tidak putus,jika pengunjung menjawab respon ada sebelumnya tolong balas sesuai dengan respon yg ada kasih sebelumnya,  .\n\n "
+        f"Pertanyaan: {user_prompt} berikan respon tanpa atribut markdown."
     )
     answer = model.generate_content(full_prompt)
     return answer.text
@@ -88,7 +92,7 @@ def get_all_reviews():
     connection = connect_to_database()
     if connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT ulasan FROM dataulasans")
+        cursor.execute("SELECT ulasan FROM data_ulasan")
         reviews = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -101,7 +105,7 @@ def save_to_database(ulasan, sentimen):
     connection = connect_to_database()
     if connection:
         cursor = connection.cursor()
-        sql = "UPDATE dataulasans SET label = %s WHERE ulasan = %s"
+        sql = "UPDATE data_ulasan SET label = %s WHERE ulasan = %s"
         cursor.execute(sql, (sentimen, ulasan))
         connection.commit()
         cursor.close()

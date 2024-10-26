@@ -41,7 +41,7 @@ def connect_to_database():
             host='localhost', 
             user='root',     
             password='',     
-            database='ulasan' 
+            database='newulasan' 
         )
         return connection
     except mysql.connector.Error as err:
@@ -53,7 +53,7 @@ def get_all_reviews():
     connection = connect_to_database()
     if connection is not None:
         cursor = connection.cursor()
-        cursor.execute("SELECT ulasan FROM dataulasans")
+        cursor.execute("SELECT ulasan FROM data_ulasan")
         reviews = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -66,7 +66,7 @@ def save_to_database(ulasan, sentimen):
     connection = connect_to_database()
     if connection is not None:
         cursor = connection.cursor()
-        sql = "UPDATE dataulasans SET label = %s WHERE ulasan = %s"
+        sql = "UPDATE data_ulasan SET label = %s WHERE ulasan = %s"
         cursor.execute(sql, (sentimen, ulasan))
         connection.commit()
         cursor.close()

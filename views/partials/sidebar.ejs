@@ -8,40 +8,68 @@
   </div>
   <nav class="flex-1 overflow-y-auto mt-6">
     <a
-      href="dashboard"
-      class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4"
+      href="/admin/dashboard"
+      class="flex items-center py-3 px-4
+      
+      <% if (title == 'Dashboard') { %> 
+        bg-yellow-500 text-green-900
+         <% } else { %> hover:bg-green-600 transition-colors duration-200 <% } %>
+      
+      
+      space-x-4"
     >
       <iconify-icon icon="mdi:view-dashboard" class="text-xl"></iconify-icon>
       <span>Dashboard</span>
     </a>
     <a
+    href="/admin/monitoring"
+    class="flex items-center py-3 px-4 
+    <% if (title == 'Data Monitoring') { %> 
+      bg-yellow-500 text-green-900
+       <% } else { %> hover:bg-green-600 transition-colors duration-200 <% } %>
+    
+    space-x-4"
+  >
+    <iconify-icon icon="pajamas:monitor"></iconify-icon>
+    <span>Monitoring</span>
+  </a>
+    <a
       href="/admin/jenis-wisata"
-      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+      class="flex items-center py-3 px-4
+      
+      <% if (title == 'Jenis Wisata') { %> 
+        bg-yellow-500 text-green-900
+         <% } else { %> hover:bg-green-600 transition-colors duration-200 <% } %>
+      space-x-4"
     >
       <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
       <span>Jenis Wisata</span>
     </a>
     <a
-      href="produk"
-      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+      href="/admin/produk"
+      class="flex items-center py-3 px-4
+      
+      <% if (title == 'Data Produk') { %> 
+        bg-yellow-500 text-green-900
+         <% } else { %> hover:bg-green-600 transition-colors duration-200 <% } %>
+      space-x-4"
     >
       <iconify-icon icon="material-symbols:package-2-sharp"></iconify-icon>
       <span>Produk</span>
     </a>
     <a
-      href="dataulasan"
-      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
+      href="/admin/dataulasan"
+      class="flex items-center py-3 px-4 
+      <% if (title == 'Data Ulasan') { %> 
+        bg-yellow-500 text-green-900
+         <% } else { %> hover:bg-green-600 transition-colors duration-200 <% } %>
+      
+      space-x-4"
     >
       <iconify-icon icon="mdi:message-text" class="text-xl"></iconify-icon>
       <span>Ulasan</span>
     </a>
-    <a
-      href="monitoring"
-      class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4"
-    >
-      <iconify-icon icon="pajamas:monitor"></iconify-icon>
-      <span>Monitoring</span>
-    </a>
+
   </nav>
   <div class="px-4 hover:bg-red-600 w-full transition-colors duration-200">
     <form action="/auth/logout" method="POST" class="flex items-center">
