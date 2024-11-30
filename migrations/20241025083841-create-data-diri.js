@@ -20,7 +20,7 @@ module.exports = {
       },
       nama: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       umur: {
         type: Sequelize.INTEGER,

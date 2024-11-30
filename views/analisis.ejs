@@ -3,38 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>AgroWista - Ulasan</title>
-    <link href="/css/tailwind.css" rel="stylesheet" />
+    <!-- <link href="/css/tailwind.css" rel="stylesheet" /> -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   </head>
   <body class="bg-gray-100">
     <div class="flex h-screen">
       <!-- Sidebar -->
-      <div class="w-64 bg-green-700 text-white flex flex-col">
-        <div class="p-6">
-          <h1 class="text-2xl font-bold text-yellow-400 text-center">AgroWista</h1>
-        </div>
-        <nav class="flex-1 overflow-y-auto mt-6">
-          <a href="/admin/dashboard" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
-            <iconify-icon icon="mdi:view-dashboard" class="text-xl"></iconify-icon>
-            <span>Dashboard</span>
-          </a>
-          <a href="/admin/jeniswisata" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
-            <iconify-icon icon="mdi:tree" class="text-xl"></iconify-icon>
-            <span>Jenis Wisata</span>
-          </a>
-          <a href="/admin/dataulasan" class="flex items-center py-3 px-4 bg-yellow-500 text-green-900 space-x-4">
-            <iconify-icon icon="mdi:message-text" class="text-xl"></iconify-icon>
-            <span>Ulasan</span>
-          </a>
-        </nav>
-        <div class="p-4">
-          <a href="#" class="flex items-center py-3 px-4 hover:bg-green-600 transition-colors duration-200 space-x-4">
-            <iconify-icon icon="mdi:cog" class="text-xl"></iconify-icon>
-            <span>Setting</span>
-          </a>
-        </div>
-      </div>
+      <%- include('partials/sidebar') %>
 
       <!-- Main content -->
       <div class="flex-1 overflow-y-auto">

@@ -6,15 +6,20 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import mysql.connector
+from dotenv import load_dotenv
+import os
+from pathlib import Path
 
 # Download NLTK resources if necessary
-# nltk.download('punkt')
-# nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('stopwords')
+
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 app = Flask(__name__)
 
 # Konfigurasi API untuk Google Generative AI
-genai.configure(api_key="AIzaSyDn3vqgBjnGpH6dyaCYUYTwktL0KRxv2vI")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Text preprocessing
 def preprocess_text(text):
@@ -34,10 +39,10 @@ def load_model():
 def connect_to_database():
     try:
         connection = mysql.connector.connect(
-            host='localhost', 
-            user='root',     
-            password='',     
-            database='newulasan' 
+           host=os.getenv("DB_HOST"), 
+            user=os.getenv("DB_USER"),     
+            password=os.getenv("DB_PASS"),     
+            database=os.getenv("DB_NAME") 
         )
         return connection
     except mysql.connector.Error as err:
@@ -116,6 +121,8 @@ def save_to_database(ulasan, sentimen):
 
 @app.route('/predict', methods=['GET'])
 def predict():
+    nltk.download('punkt')
+    nltk.download('stopwords')
     ulasan_baru = get_all_reviews()
     hasil_prediksi = predict_sentiment(ulasan_baru)
 

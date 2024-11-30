@@ -7,87 +7,71 @@ const { where } = require("sequelize");
 const anthropic = new Anthropic({
   apiKey: process.env.CLAUDE_API_KEY,
 });
+const base_url = process.env.FLASK_BASE_URL;
 
 const analisisUlasan = async (req, res) => {
   try {
-    await axios.get("http://localhost:5000/predict");
+    await axios.get(`${base_url}/predict`);
     const predictions = await DataUlasan.findAll();
     const wisata = await JenisWisata.findAll();
-    const promptalt =
-      "siapa presiden mesir pertama?, jawaban yg dikirimkan dalam datg html karna saya ingin menampilkannya dihalaman web usahakan pakai class css tailwind, Langsung saja berikan jawabban tanpa pengantar";
+   
     const prompt = `
-  Data ulasan yang diterima: ${JSON.stringify(
-    predictions
-  )}. dan ini jenis wisatanya  ${JSON.stringify(wisata)}
-    Analisis Potensi Desa Leuwimalang dalam Pengembangan Wisata
+    Data ulasan yang diterima: ${JSON.stringify(predictions)}. 
+    Jenis wisata yang tersedia: ${JSON.stringify(wisata)}.
+    
+    ### Tujuan Analisis
+    Melakukan analisis data ulasan untuk:
+    1. Mengidentifikasi pola dalam ulasan (positif, netral, negatif).
+    2. Menemukan potensi pengembangan wisata berdasarkan data.
+    3. Memberikan rekomendasi berbasis bukti dari ulasan.
+    
+    ### Instruksi Analisis
+    1. **Rekap Data Ulasan**
+       - Sajikan jumlah ulasan berdasarkan kategori: positif, netral, dan negatif.
+    
+    2. **Analisis Sentimen dan Masalah Utama**
+       - Jelaskan pola utama dari ulasan positif (aspek yang dihargai pengunjung).
+       - Temukan masalah yang sering muncul dari ulasan negatif/netral, sertakan bukti berupa kutipan ulasan.
+    
+    3. **Karakteristik Pengunjung**
+       - Identifikasi demografi umum pengunjung dari data (asal daerah, pekerjaan, usia, dll.).
+       - Berikan analisis bagaimana karakteristik pengunjung memengaruhi ulasan.
+    
+    4. **Evaluasi Jenis Wisata**
+       Untuk setiap jenis wisata:
+       - **Analisis** ulasan yang ada (positif dan negatif).
+       - **Bukti**: Kutip ulasan spesifik untuk mendukung penilaian.
+       - **Saran**: Rekomendasi pengembangan berdasarkan ulasan tersebut.
+    
+    5. **Potensi Pengembangan**
+       - Analisis peluang pengembangan wisata dari ulasan.
+       - Identifikasi potensi wisata baru dengan mengutip ulasan spesifik.
+       - Sebutkan dampak yang diharapkan dan langkah yang diperlukan.
+    
+    6. **Kesimpulan dan Rekomendasi**
+       - Buat ringkasan berdasarkan data ulasan, fokus pada rekomendasi prioritas.
+       - Langkah konkrit untuk meningkatkan kepuasan pengunjung.
+       - Pelatihan atau sumber daya tambahan yang diperlukan.
+    
+    ### Instruksi Format Output
+    1. **Struktur HTML**:
+       - Gunakan elemen seperti \`<div>\`, \`<h2>\`, \`<p>\`, dan \`<ul>\` untuk membuat tampilan terstruktur.
+       - Beri kelas yg setiap element agar bagus dan menarik untuk ditampilkan, pastikan desain yang terbaik
+    
+    2. **Penekanan pada Paragraf**:
+       - Paragraf diberi class \`text-justify\` agar terlihat rapi.
+       - Kutipan ulasan gunakan \`<blockquote class="italic">\` untuk membedakan dari teks lainnya.
+    
+    3. **Tampilan Responsif**:
+       - Gunakan Tailwind utilities untuk memastikan tampilan kompatibel di berbagai perangkat.
+       - Sertakan padding (\`p-6\`), background (\`bg-white\`), dan shadow (\`shadow-md\`) untuk estetika.
+    
+    4. **Panjang Maksimal Jawaban**:
+       - Batas panjang 8192 token.
+       - Jawab langsung tanpa pengantar, berikan analisis sistematis dan mendalam sesuai instruksi.
+    `;
+    
   
-  Berdasarkan data ulasan dan jenis kegiatan wisata yang ada, analisis mendalam ini bertujuan untuk memetakan potensi desa Leuwimalang serta menyelesaikan berbagai permasalahan yang ada.
-  
-  A. Rekap Data yang Diterima
-  
-  1. Data Ulasan
-     - Jabarkan jumlah ulasan positif, netral, dan negatif.
-     
-  2. Karakteristik Pengunjung
-     - Dari pengunjung yang memberikan ulasan, simpulkan karakteristik umum mereka, termasuk aspek pekerjaan, asal, jenis kelamin, dan faktor demografis lainnya.
-  
-  B. Penilaian Masing-masing Kegiatan Wisata
-  
-  Untuk setiap kegiatan wisata, jabarkan hal-hal berikut:
-  
-  1. Pendahuluan
-     - Deskripsi singkat mengenai kegiatan wisata.
-  
-  2. Respon Positif
-     - Apa yang mendapatkan tanggapan positif dari pengunjung?
-  
-  3. Respon Negatif/Pemasalahan
-     - Identifikasi masalah yang dihadapi berdasarkan ulasan.
-  
-  4. Rumusan
-     - Apa yang perlu ditingkatkan dan diperbaiki, serta solusi yang diusulkan.
-  
-  5. Saran Pengembangan
-     - Berdasarkan ulasan sebelumnya, sampaikan saran untuk pengembangan kegiatan wisata tersebut.
-  
-  C. Potensi Pengembangan Kegiatan Wisata yang Sudah Ada
-  Dari kegiatan wisata yg sudah ada apa yg bisa dikembangkan lagi jelaskan masing masing dengan poin-poin ini
-  
-  1. Alasan Pengembangan
-     - Identifikasi bagian dari ulasan yang menunjukkan potensi untuk dikembangkan.
-  
-  2. Dampak yang Diharapkan
-     - Apa dampak positif yang diharapkan dari pengembangan tersebut?
-  
-  3. Upaya untuk Mengembangkan
-     - Rencana aksi untuk mengembangkan potensi yang ada.
-  
-  4. Tantangan
-     - Apa saja tantangan yang mungkin dihadapi dalam pengembangan ini?
-  
-  D. Potensi Pengembangan yang Belum Ada 
-  Kegiatan/Program apa yg bisa jadi potensi jelaskan masing faktor berikut:
-  1. Alasan
-     - Identifikasi potensi baru berdasarkan ulasan pengunjung yang ada.
-  
-  2. Dampak yang Diharapkan
-     - Apa dampak yang diharapkan jika potensi ini dikembangkan?
-  
-  3. Kebutuhan
-     - Apa saja yang dibutuhkan untuk mewujudkannya?
-  
-  4. Upaya
-     - Rencana tindakan untuk mengimplementasikan potensi baru tersebut.
-  
-  5. Tantangan
-     - Apa saja tantangan yang mungkin dihadapi dalam pengembangan potensi baru ini?
-  
-  E. Saran dan Kesimpulan
-  
-  Sampaikan saran untuk pengelolaan desa wisata ini saat ini dan ke depan, berdasarkan potensi yang telah dipetakan sebelumnya. Diskusikan juga pelatihan yang diperlukan bagi sumber daya manusia (SDM) yang akan mengelola pengembangan ini.
-  jawab rangkaian pertanyaan diatas dengan analisis yang mendalam , detail , fakta, sistematis dan penuh pertimbangan, berikan jawaban yang Panjang maksimal  8192 token, jawaban yg dikirimkan dalam datg html karna saya ingin menampilkannya dihalaman web usahakan pakai class css tailwind.kalau ada paragraf beri justify. Langsung saja berikan jawabban tanpa pengantar
-  `;
-
     const response = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20240620",
       max_tokens: 8192,
@@ -97,7 +81,7 @@ const analisisUlasan = async (req, res) => {
           content: [
             {
               type: "text",
-              text: promptalt,
+              text: prompt,
             },
           ],
         },
@@ -117,7 +101,7 @@ const analisisUlasan = async (req, res) => {
 const dataUlasan = async (req, res) => {
   try {
     // const axios = require("axios");
-    await axios.get("http://localhost:5000/predict");
+    await axios.get(`${base_url}/predict`);
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;

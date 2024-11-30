@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AgroWista - Jenis Wisata</title>
+        <title>AgroWista - Data Laporan</title>
         <link href="/css/tailwind.css" rel="stylesheet" />
+        <link rel="shortcut icon" type="x-icon" href="/images/favicon.ico" />
         <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     </head>
     <body class="bg-gray-100">
@@ -21,7 +22,7 @@
                                 class="fa-brands fa-pagelines text-green-600 text-xl mr-3"
                             ></i>
                             <h2 class="text-2xl font-semibold text-gray-800">
-                                Jenis Wisata
+                                Data Laporan
                             </h2>
                         </div>
                         <div class="flex items-center space-x-4">
@@ -46,14 +47,7 @@
 
                 <main class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h1 class="text-2xl font-bold">Jenis Wisata</h1>
-                        <a href="/admin/jenis-wisata/add-wisata"
-                            ><button
-                                class="bg-green-600 text-white px-4 py-2 rounded-md"
-                            >
-                                Tambah
-                            </button></a
-                        >
+                        <h1 class="text-2xl font-bold">Data Laporan</h1>
                     </div>
 
                     <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -68,12 +62,7 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Nama
-                                    </th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Gambar
+                                        Judul
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -83,46 +72,48 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
+                                        Gambar
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
                                         Aksi
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Point
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <!-- Repeat this row structure for each item -->
-                                <% jeniswisata.forEach((jeniswisata, index) => {
-                                %>
+                                <% pelaporan.forEach((pelaporan, index) => { %>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <%= (currentPage - 1) * 5 + index + 1 %>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <%= jeniswisata.nama_wisata %>
+                                        <%= pelaporan.judul %>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <%= pelaporan.deskripsi %>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <img
-                                            src="/<%= jeniswisata.gambar %>"
-                                            alt="Foto Wisata"
+                                            src="/<%= pelaporan.gambar %>"
+                                            alt="Foto Laporan"
                                             class="h-20 w-20 rounded-sm"
                                         />
                                     </td>
                                     <td class="px-6 py-4">
-                                        <%= jeniswisata.deskripsi %>
+                                        <%= pelaporan.deskripsi %>
                                     </td>
-                                    <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
-                                    >
-                                        <a
-                                            href="/admin/jenis-wisata/edit-wisata/<%= jeniswisata.id %>"
-                                            class="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2"
-                                        >
-                                            Edit
-                                        </a>
-                                        <button
-                                            onclick="hapusWisata('<%= jeniswisata.id %>')"
-                                            class="bg-red-500 text-white px-3 py-1 rounded-md"
-                                        >
-                                            Hapus
-                                        </button>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <% if (pelaporan.point) { %> <%=
+                                        pelaporan.point %> <% } else { %>
+                                        <span class="text-gray-500">0</span>
+                                        <% } %>
                                     </td>
                                 </tr>
                                 <% }) %>
@@ -130,34 +121,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <script>
-                        function hapusWisata(id) {
-                            if (
-                                confirm(
-                                    "Apakah Anda yakin ingin menghapus wisata ini?"
-                                )
-                            ) {
-                                fetch(
-                                    `/admin/jenis-wisata/delete-wisata/${id}`,
-                                    {
-                                        method: "DELETE",
-                                    }
-                                )
-                                    .then((response) => response.json())
-                                    .then((data) => {
-                                        if (data.success) {
-                                            alert("Wisata berhasil dihapus");
-                                            location.reload(); // Refresh halaman setelah berhasil menghapus
-                                        } else {
-                                            alert("Gagal menghapus wisata");
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        console.error("Error:", error);
-                                    });
-                            }
-                        }
-                    </script>
                     <div class="mt-6">
                         <nav class="flex justify-center">
                             <ul
@@ -167,7 +130,7 @@
                                 <li>
                                     <% if (currentPage > 1) { %>
                                     <a
-                                        href="/admin/jenis-wisata?page=<%= currentPage - 1 %>"
+                                        href="/admin/datalaporan?page=<%= currentPage - 1 %>"
                                         class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700"
                                     >
                                         <span class="sr-only">Previous</span>
@@ -215,7 +178,7 @@
                                 <% for (let i = 1; i <= totalPages; i++) { %>
                                 <li>
                                     <a
-                                        href="/admin/jenis-wisata?page=<%= i %>"
+                                        href="/admin/datalaporan?page=<%= i %>"
                                         class="flex items-center justify-center px-4 h-10 leading-tight <%= i === currentPage ? 'text-green-600 bg-gray-200' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700' %>"
                                     >
                                         <%= i %>
@@ -227,7 +190,7 @@
                                 <li>
                                     <% if (currentPage < totalPages) { %>
                                     <a
-                                        href="/admin/jenis-wisata?page=<%= currentPage + 1 %>"
+                                        href="/admin/datalaporan?page=<%= currentPage + 1 %>"
                                         class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700"
                                     >
                                         <span class="sr-only">Next</span>

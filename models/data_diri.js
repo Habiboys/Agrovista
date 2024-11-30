@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       DataDiri.belongsTo(models.User, { foreignKey: 'id_user' });
       DataDiri.hasMany(models.DataUlasan, { foreignKey: 'id_data_diri', onDelete: 'CASCADE' });
+      DataDiri.hasMany(models.Pelaporan, { foreignKey: 'id_data_diri', onDelete: 'CASCADE' });
     }
   }
 
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     nama: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     umur: {
       type: DataTypes.INTEGER,
