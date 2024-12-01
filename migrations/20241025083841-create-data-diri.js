@@ -11,7 +11,7 @@ module.exports = {
       id_user: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users', // Pastikan nama tabel user sama seperti di sini
+          model: 'users', // Pastikan nama tabel user sama seperti di sini
           key: 'id',
         },
         onUpdate: 'CASCADE',

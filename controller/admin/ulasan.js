@@ -3,7 +3,7 @@ const { DataUlasan, JenisWisata, User, DataDiri } = require("../../models"); // 
 const axios = require("axios");
 
 const Anthropic = require("@anthropic-ai/sdk");
-const { where } = require("sequelize");
+// const { where } = require("sequelize");
 const anthropic = new Anthropic({
   apiKey: process.env.CLAUDE_API_KEY,
 });
@@ -56,16 +56,16 @@ const analisisUlasan = async (req, res) => {
     ### Instruksi Format Output
     1. **Struktur HTML**:
        - Gunakan elemen seperti \`<div>\`, \`<h2>\`, \`<p>\`, dan \`<ul>\` untuk membuat tampilan terstruktur.
-       - Beri kelas yg setiap element agar bagus dan menarik untuk ditampilkan, pastikan desain yang terbaik
     
     2. **Penekanan pada Paragraf**:
        - Paragraf diberi class \`text-justify\` agar terlihat rapi.
        - Kutipan ulasan gunakan \`<blockquote class="italic">\` untuk membedakan dari teks lainnya.
     
-    3. **Tampilan Responsif**:
+    3. **Style & Tampilan Responsif**:
        - Gunakan Tailwind utilities untuk memastikan tampilan kompatibel di berbagai perangkat.
        - Sertakan padding (\`p-6\`), background (\`bg-white\`), dan shadow (\`shadow-md\`) untuk estetika.
-    
+       - Beri kelas tailwind di setiap element agar bagus dan menarik untuk ditampilkan, pastikan desain yang terbaik
+        
     4. **Panjang Maksimal Jawaban**:
        - Batas panjang 8192 token.
        - Jawab langsung tanpa pengantar, berikan analisis sistematis dan mendalam sesuai instruksi.
@@ -100,7 +100,7 @@ const analisisUlasan = async (req, res) => {
 const dataUlasan = async (req, res) => {
   try {
     // const axios = require("axios");
-    await axios.get(`${base_url}/predict`);
+    // await axios.get(`${base_url}/predict`);
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;

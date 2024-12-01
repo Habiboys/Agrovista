@@ -1,12 +1,6 @@
 require("dotenv").config();
 const { sequelize } = require("../../models");
-const {
-  DataUlasan,
-  JenisWisata,
-  DataDiri,
-  Produk,
-  Pelaporan,
-} = require("../../models");
+const { DataUlasan, JenisWisata, DataDiri, Produk } = require("../../models");
 const { Op } = require("sequelize");
 const moment = require("moment");
 
@@ -61,7 +55,6 @@ const store = async (req, res, next) => {
 
     const total_ulasan = await DataUlasan.count();
     const total_wisata = await JenisWisata.count();
-    const total_laporan = await Pelaporan.count();
 
     const reviewCounts = await DataUlasan.findAll({
       attributes: [
@@ -164,21 +157,22 @@ const store = async (req, res, next) => {
 
     const asalCounts = await DataUlasan.findAll({
       attributes: [
-        [sequelize.fn("COUNT", sequelize.col("DataDiri.id")), "count"], // Menghitung jumlah dari DataDiri
+        [sequelize.fn("COUNT", sequelize.col("DataDiri.id")), "count"],
+        [sequelize.col("DataDiri.asal"), "asal"], // Add this line to include asal in the group by
       ],
       include: [
         {
           model: DataDiri,
-          attributes: ["asal"], // Mengambil kolom asal dari DataDiri
+          attributes: [], // Remove explicit asal attribute
           required: true,
           as: "DataDiri",
         },
       ],
-      group: ["DataDiri.asal"], // Mengelompokkan berdasarkan asal dari DataDiri
+      group: [sequelize.col("DataDiri.asal")], // Use sequelize.col for more precise grouping
     });
 
-    // Mengakses atribut dengan benar
-    const asalLabels = asalCounts.map((row) => row.DataDiri.asal);
+    // Modify how you extract labels and data
+    const asalLabels = asalCounts.map((row) => row.dataValues.asal);
     const asalData = asalCounts.map((row) => row.dataValues.count);
 
     console.log("Jadi isinya:", asalLabels, asalData);
@@ -187,7 +181,6 @@ const store = async (req, res, next) => {
       title: "Dashboard",
       total_ulasan,
       total_wisata,
-      total_laporan,
       total_positif: monthlyData.positif.reduce((a, b) => a + b, 0),
       total_negatif: monthlyData.negatif.reduce((a, b) => a + b, 0),
       total_netral: monthlyData.netral.reduce((a, b) => a + b, 0),
