@@ -8,7 +8,8 @@
     "migrate": "npx sequelize-cli db:migrate",
     "undo": "npx sequelize-cli db:migrate:undo",
     "undo:all": "npx sequelize-cli db:migrate:undo:all",
-    "build:css": "npx tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --watch"
+    "build:css": "npx tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --watch",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.29.0",

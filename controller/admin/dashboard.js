@@ -157,26 +157,25 @@ const store = async (req, res, next) => {
 
     const asalCounts = await DataUlasan.findAll({
       attributes: [
-        [sequelize.fn('COUNT', sequelize.col('DataDiri.id')), 'count'],
-        [sequelize.col('DataDiri.asal'), 'asal'] // Add this line to include asal in the group by
+        [sequelize.fn("COUNT", sequelize.col("DataDiri.id")), "count"],
+        [sequelize.col("DataDiri.asal"), "asal"], // Add this line to include asal in the group by
       ],
       include: [
         {
           model: DataDiri,
           attributes: [], // Remove explicit asal attribute
           required: true,
-          as: 'DataDiri',
+          as: "DataDiri",
         },
       ],
-      group: [sequelize.col('DataDiri.asal')], // Use sequelize.col for more precise grouping
+      group: [sequelize.col("DataDiri.asal")], // Use sequelize.col for more precise grouping
     });
-    
+
     // Modify how you extract labels and data
     const asalLabels = asalCounts.map((row) => row.dataValues.asal);
     const asalData = asalCounts.map((row) => row.dataValues.count);
-    
+
     console.log("Jadi isinya:", asalLabels, asalData);
-    
 
     res.render("dashboard", {
       title: "Dashboard",

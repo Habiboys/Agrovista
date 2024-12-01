@@ -14,7 +14,7 @@ const analisisUlasan = async (req, res) => {
     await axios.get(`${base_url}/predict`);
     const predictions = await DataUlasan.findAll();
     const wisata = await JenisWisata.findAll();
-   
+
     const prompt = `
     Data ulasan yang diterima: ${JSON.stringify(predictions)}. 
     Jenis wisata yang tersedia: ${JSON.stringify(wisata)}.
@@ -70,8 +70,7 @@ const analisisUlasan = async (req, res) => {
        - Batas panjang 8192 token.
        - Jawab langsung tanpa pengantar, berikan analisis sistematis dan mendalam sesuai instruksi.
     `;
-    
-  
+
     const response = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20240620",
       max_tokens: 8192,
