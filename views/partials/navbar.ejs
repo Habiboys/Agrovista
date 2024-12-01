@@ -1,116 +1,114 @@
 <header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
   <nav class="container mx-auto px-4 py-4">
-      <div class="flex justify-between items-center">
-          <!-- Logo dan Nama -->
-          <a href="/" class="flex items-center gap-2">
-              <div
-                  class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center"
-              >
-                  <i class="fas fa-mountain text-white text-xl"></i>
-              </div>
-              <div>
-                  <h1 class="text-xl font-bold text-green-700">
-                      Desa Wisata
-                  </h1>
-                  <p class="text-sm text-green-600">Leuwimalang</p>
-              </div>
-          </a>
+    <div class="flex justify-between items-center">
+      <!-- Logo dan Nama -->
+      <a href="/" class="flex items-center gap-2">
+        <div
+          class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center"
+        >
+          <i class="fas fa-mountain text-white text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-green-700">Desa Wisata</h1>
+          <p class="text-sm text-green-600">Leuwimalang</p>
+        </div>
+      </a>
 
-          <!-- Navigation Links - Desktop -->
-          <div class="hidden md:flex items-center gap-8">
-              <a
-                  href="/"
-                  class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
-              >
-                  <i class="fas fa-home"></i>
-                  <span>Home</span>
-              </a>
-              <a
-                  href="#"
-                  class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
-              >
-                  <i class="fas fa-map-marked-alt"></i>
-                  <span>Paket Wisata</span>
-              </a>
-              <a
-                  href="#"
-                  class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
-              >
-                  <i class="fas fa-store"></i>
-                  <span>Produk</span>
-              </a>
-         
-              <!-- New Menu: Ulasan -->
-              <a
-                  href="/ulasan"
-                  class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
-              >
-                  <i class="fas fa-comments"></i>
-                  <span>Ulasan</span>
-              </a>
-              <!-- New Menu: Pelaporan -->
-              <a
-                  href="/pelaporan"
-                  class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
-              >
-                  <i class="fas fa-flag"></i>
-                  <span>Pelaporan</span>
-              </a>
-          </div>
+      <!-- Navigation Links - Desktop -->
+      <div class="hidden md:flex items-center gap-8">
+        <a
+          href="/"
+          class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
+        >
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a
+          href="#"
+          class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
+        >
+          <i class="fas fa-map-marked-alt"></i>
+          <span>Paket Wisata</span>
+        </a>
+        <a
+          href="#"
+          class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
+        >
+          <i class="fas fa-store"></i>
+          <span>Produk</span>
+        </a>
 
-          <!-- User Menu -->
-          <% if(user) {%>
-          <div class="flex items-center gap-4">
-              <div class="relative" id="profileDropdown">
-                  <img
-                      id="profileButton"
-                      src="https://images.unsplash.com/photo-1648183185045-7a5592e66e9c?q=80&w=2042&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="Profile"
-                      class="w-10 h-10 rounded-full ring-2 ring-green-500 ring-offset-2 cursor-pointer"
-                  />
-
-                  <div
-                      id="profileMenu"
-                      class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50"
-                  >
-                      <a
-                          href="/profile"
-                          class="block px-4 py-2 text-gray-700 hover:bg-green-50"
-                      >
-                          <i class="fas fa-user mr-2"></i> Profile
-                      </a>
-                      <a
-                          href="/settings"
-                          class="block px-4 py-2 text-gray-700 hover:bg-green-50"
-                      >
-                          <i class="fas fa-cog mr-2"></i> Settings
-                      </a>
-                      <hr class="my-2" />
-                      <form action="/auth/logout" method="post">
-                          <button
-                              type="submit"
-                              class="block px-4 py-2 text-red-600 hover:bg-red-50"
-                          >
-                              <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                          </button>
-                      </form>
-                  </div>
-              </div>
-              <% }else{ %>
-              <a
-                  href="/auth/login"
-                  class="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center gap-2"
-              >
-                  <i class="fas fa-sign-in-alt"></i>
-                  <span>Log In</span>
-              </a>
-              <% } %>
-              <!-- Mobile Menu Button -->
-              <button class="md:hidden text-gray-500 hover:text-green-600">
-                  <i class="fas fa-bars text-xl"></i>
-              </button>
-          </div>
+        <!-- New Menu: Ulasan -->
+        <a
+          href="/ulasan"
+          class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
+        >
+          <i class="fas fa-comments"></i>
+          <span>Ulasan</span>
+        </a>
+        <!-- New Menu: Pelaporan -->
+        <a
+          href="/pelaporan"
+          class="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-1"
+        >
+          <i class="fas fa-flag"></i>
+          <span>Pelaporan</span>
+        </a>
       </div>
+
+      <!-- User Menu -->
+      <% if(user) {%>
+      <div class="flex items-center gap-4">
+        <div class="relative" id="profileDropdown">
+          <img
+            id="profileButton"
+            src="https://images.unsplash.com/photo-1648183185045-7a5592e66e9c?q=80&w=2042&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Profile"
+            class="w-10 h-10 rounded-full ring-2 ring-green-500 ring-offset-2 cursor-pointer"
+          />
+
+          <div
+            id="profileMenu"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50"
+          >
+            <a
+              href="/profile"
+              class="block px-4 py-2 text-gray-700 hover:bg-green-50"
+            >
+              <i class="fas fa-user mr-2"></i> Profile
+            </a>
+            <a
+              href="/settings"
+              class="block px-4 py-2 text-gray-700 hover:bg-green-50"
+            >
+              <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+            <hr class="my-2" />
+            <form action="/auth/logout" method="post">
+              <button
+                type="submit"
+                class="block px-4 py-2 text-red-600 hover:bg-red-50"
+              >
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+              </button>
+            </form>
+          </div>
+        </div>
+        <% }else{ %>
+        <a
+          href="/auth/login"
+          class="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center gap-2"
+        >
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Log In</span>
+        </a>
+        <% } %>
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-500 hover:text-green-600">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
   </nav>
 </header>
 <script>
